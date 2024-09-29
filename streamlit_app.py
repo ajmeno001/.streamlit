@@ -82,28 +82,14 @@ def submit_application():
 
         st.write("## Select Pet Type and Breed")
         
-        col3, col4, col5 = st.columns(3)
-        
-        with col3:
-            st.write("### 🐶 Dogs")
-            dog_breed = st.selectbox("Dog Breed", breed_options["Dog"], key="dog_breed")
-        
-        with col4:
-            st.write("### 🐱 Cats")
-            cat_breed = st.selectbox("Cat Breed", breed_options["Cat"], key="cat_breed")
-        
-        with col5:
-            st.write("### 🦎 Reptiles")
-            reptile_breed = st.selectbox("Reptile Breed", breed_options["Reptile"], key="reptile_breed")
-
         pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"])
 
         if pet_type == "Dog":
-            pet_breed = dog_breed
+            pet_breed = st.selectbox("🐶 Dog Breed", breed_options["Dog"])
         elif pet_type == "Cat":
-            pet_breed = cat_breed
+            pet_breed = st.selectbox("🐱 Cat Breed", breed_options["Cat"])
         else:
-            pet_breed = reptile_breed
+            pet_breed = st.selectbox("🦎 Reptile Breed", breed_options["Reptile"])
 
         submitted = st.form_submit_button("Submit Application")
 

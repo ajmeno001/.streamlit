@@ -62,6 +62,18 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed):
         return False
 
 def submit_application():
+    if 'pet_type' not in st.session_state:
+        st.session_state.pet_type = "Dog"
+
+    breed_options = {
+        "Dog": ["Labrador Retriever", "German Shepherd", "Golden Retriever", "Bulldog", "Beagle", "Poodle", "Rottweiler", "Boxer", "Dachshund", "Siberian Husky"],
+        "Cat": ["Siamese", "Persian", "Maine Coon", "Sphynx", "Bengal", "British Shorthair", "Scottish Fold", "Ragdoll", "Russian Blue", "American Shorthair"],
+        "Reptile": ["Bearded Dragon", "Leopard Gecko", "Ball Python", "Corn Snake", "Green Iguana", "Blue-Tongued Skink", "Crested Gecko", "Red-Eared Slider", "Chameleon", "Tortoise"]
+    }
+
+    def update_pet_type():
+        st.session_state.pet_type = st.session_state.pet_type_radio
+
     with st.form("application_form", clear_on_submit=True):
         col1, col2 = st.columns(2)
         with col1:
@@ -74,19 +86,13 @@ def submit_application():
             state = st.text_input("State")
             zip_code = st.text_input("Zip")
         
-        breed_options = {
-            "Dog": ["Labrador Retriever", "German Shepherd", "Golden Retriever", "Bulldog", "Beagle", "Poodle", "Rottweiler", "Boxer", "Dachshund", "Siberian Husky"],
-            "Cat": ["Siamese", "Persian", "Maine Coon", "Sphynx", "Bengal", "British Shorthair", "Scottish Fold", "Ragdoll", "Russian Blue", "American Shorthair"],
-            "Reptile": ["Bearded Dragon", "Leopard Gecko", "Ball Python", "Corn Snake", "Green Iguana", "Blue-Tongued Skink", "Crested Gecko", "Red-Eared Slider", "Chameleon", "Tortoise"]
-        }
-
         st.write("## Select Pet Type and Breed")
         
-        pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"])
+        pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"], key="pet_type_radio", on_change=update_pet_type)
 
-        if pet_type == "Dog":
+        if st.session_state.pet_type == "Dog":
             pet_breed = st.selectbox("🐶 Dog Breed", breed_options["Dog"])
-        elif pet_type == "Cat":
+        elif st.session_state.pet_type == "Cat":
             pet_breed = st.selectbox("🐱 Cat Breed", breed_options["Cat"])
         else:
             pet_breed = st.selectbox("🦎 Reptile Breed", breed_options["Reptile"])

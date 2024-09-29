@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from streamlit_gsheets import GSheetsConnection
+from st_gsheets_connection import GSheetsConnection
 
 # Title and Description
 st.title("🐶🐱 Pet Adoption Application 🐰🐦")

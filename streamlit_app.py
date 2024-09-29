@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from streamlit_gsheets import GSheetsConnectionn
+from streamlit_gsheets import GSheetsConnection
 
 # Title and Description
 st.title("🐶🐱 Pet Adoption Application 🐰🐦")
@@ -48,14 +48,10 @@ def submit_application():
                 "Zip": [zip_code]
             })
             
-            # Get existing data
             existing_data = load_data()
-            
-            # Append new data to existing data
             updated_data = pd.concat([existing_data, new_data], ignore_index=True)
             
             try:
-                # Update the Google Sheet
                 conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
                 st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                 st.session_state.application_submitted = True
@@ -72,7 +68,3 @@ else:
     if st.button("🆕 Enter New Application"):
         st.session_state.application_submitted = False
         st.rerun()
-
-# Uncomment these lines if you want to display existing applications
-# st.subheader("🐾 Existing Applications")
-# st.dataframe(existing_data)

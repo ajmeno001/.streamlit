@@ -24,42 +24,7 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Replace these with your actual email settings
-    sender_email = "menofinance2022@outlook.com"
-    sender_password = "USDcad23!!"  # Replace with your actual password
-    # Determine the emoji based on pet type
-    pet_emojis = {
-        "Dog": "🐶",
-        "Cat": "🐱",
-        "Reptile": "🦎"
-    }
-    pet_emoji = pet_emojis.get(pet_type, "")
-    
-    subject = "Pet Adoption Application Confirmation"
-    body = f"""
-    Dear {first_name},
-
-    Thank you for submitting your pet adoption application for a {pet_emoji} {pet_breed} {pet_type}. 
-    We have received your application and will review it shortly.
-
-    Best regards,
-    The Pet Adoption Team
-    """
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = email
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
-    
-    try:
-        with smtplib.SMTP('smtp-mail.outlook.com', 587) as server:
-            server.starttls()
-            server.login(sender_email, sender_password)
-            server.send_message(msg)
-        return True
-    except Exception as e:
-        st.error(f"Error sending confirmation email: {str(e)}")
-        return False
+    # ... (keep the email sending function as is)
 
 def submit_application():
     with st.form("application_form", clear_on_submit=True):
@@ -82,28 +47,14 @@ def submit_application():
 
         st.write("## Select Pet Type and Breed")
         
-        col3, col4, col5 = st.columns(3)
-        
-        with col3:
-            st.write("### 🐶 Dogs")
-            dog_breed = st.selectbox("Dog Breed", breed_options["Dog"], key="dog_breed")
-        
-        with col4:
-            st.write("### 🐱 Cats")
-            cat_breed = st.selectbox("Cat Breed", breed_options["Cat"], key="cat_breed")
-        
-        with col5:
-            st.write("### 🦎 Reptiles")
-            reptile_breed = st.selectbox("Reptile Breed", breed_options["Reptile"], key="reptile_breed")
-
-        pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"])
+        pet_type = st.selectbox("Select Pet Type", ["Dog", "Cat", "Reptile"])
 
         if pet_type == "Dog":
-            pet_breed = dog_breed
+            pet_breed = st.selectbox("Dog Breed", breed_options["Dog"])
         elif pet_type == "Cat":
-            pet_breed = cat_breed
+            pet_breed = st.selectbox("Cat Breed", breed_options["Cat"])
         else:
-            pet_breed = reptile_breed
+            pet_breed = st.selectbox("Reptile Breed", breed_options["Reptile"])
 
         submitted = st.form_submit_button("Submit Application")
 

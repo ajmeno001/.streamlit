@@ -24,8 +24,10 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
+    # Replace these with your actual email settings
     sender_email = "menofinance2022@outlook.com"
     sender_password = "USDcad23!!"  # Replace with your actual password
+    # Determine the emoji based on pet type
     pet_emojis = {
         "Dog": "🐶",
         "Cat": "🐱",
@@ -80,14 +82,28 @@ def submit_application():
 
         st.write("## Select Pet Type and Breed")
         
-        pet_type = st.selectbox("Select Pet Type", ["Dog", "Cat", "Reptile"])
+        col3, col4, col5 = st.columns(3)
+        
+        with col3:
+            st.write("### 🐶 Dogs")
+            dog_breed = st.selectbox("Dog Breed", breed_options["Dog"], key="dog_breed")
+        
+        with col4:
+            st.write("### 🐱 Cats")
+            cat_breed = st.selectbox("Cat Breed", breed_options["Cat"], key="cat_breed")
+        
+        with col5:
+            st.write("### 🦎 Reptiles")
+            reptile_breed = st.selectbox("Reptile Breed", breed_options["Reptile"], key="reptile_breed")
+
+        pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"])
 
         if pet_type == "Dog":
-            pet_breed = st.selectbox("Dog Breed", breed_options["Dog"])
+            pet_breed = dog_breed
         elif pet_type == "Cat":
-            pet_breed = st.selectbox("Cat Breed", breed_options["Cat"])
+            pet_breed = cat_breed
         else:
-            pet_breed = st.selectbox("Reptile Breed", breed_options["Reptile"])
+            pet_breed = reptile_breed
 
         submitted = st.form_submit_button("Submit Application")
 
@@ -105,6 +121,7 @@ def submit_application():
             }
             st.session_state.review_stage = True
 
+    # This is outside the form
     if submitted:
         st.success("Application submitted successfully!")
         st.write("Review your application:")

@@ -4,6 +4,7 @@ from streamlit_gsheets import GSheetsConnection
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import os
 
 st.title("🐶🐱 Pet Adoption Application 🐰🦎")
 st.markdown("Enter your application details below to give a furry (or scaly) friend a forever home! 🏠💖")
@@ -24,10 +25,10 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Replace these with your actual email settings
-    sender_email = "menofinance2022@outlook.com"
-    sender_password = "USDcad23!!"  # Replace with your actual password
-    # Determine the emoji based on pet type
+    # Use environment variables for sensitive information
+    sender_email = os.environ.get("SENDER_EMAIL", "menofinance2022@outlook.com")
+    sender_password = os.environ.get("SENDER_PASSWORD", "USDcad23!!")
+    
     pet_emojis = {
         "Dog": "🐶",
         "Cat": "🐱",
@@ -52,13 +53,13 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed):
     msg.attach(MIMEText(body, 'plain'))
     
     try:
-        with smtplib.SMTP('smtp-mail.outlook.com', 587) as server:
-            server.starttls()
+        with smtplib.SMTP_SSL('smtp.office365.com', 465) as server:
             server.login(sender_email, sender_password)
             server.send_message(msg)
         return True
     except Exception as e:
         st.error(f"Error sending confirmation email: {str(e)}")
+        print(f"Detailed error: {e}")  # This will print to your console/logs
         return False
 
 def submit_application():
@@ -121,7 +122,6 @@ def submit_application():
             }
             st.session_state.review_stage = True
 
-    # This is outside the form
     if submitted:
         st.success("Application submitted successfully!")
         st.write("Review your application:")
@@ -152,7 +152,6 @@ if not st.session_state.application_submitted:
                 st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                 st.session_state.application_submitted = True
                 
-                # Send confirmation email
                 if send_confirmation_email(st.session_state.application_data["Email"], 
                                            st.session_state.application_data["First Name"],
                                            st.session_state.application_data["Pet Type"],

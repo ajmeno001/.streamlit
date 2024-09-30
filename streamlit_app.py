@@ -24,7 +24,40 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # ... (keep the email sending function as is)
+    sender_email = "menofinance2022@outlook.com"
+    sender_password = "USDcad23!!"  # Replace with your actual password
+    pet_emojis = {
+        "Dog": "🐶",
+        "Cat": "🐱",
+        "Reptile": "🦎"
+    }
+    pet_emoji = pet_emojis.get(pet_type, "")
+    
+    subject = "Pet Adoption Application Confirmation"
+    body = f"""
+    Dear {first_name},
+
+    Thank you for submitting your pet adoption application for a {pet_emoji} {pet_breed} {pet_type}. 
+    We have received your application and will review it shortly.
+
+    Best regards,
+    The Pet Adoption Team
+    """
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = email
+    msg['Subject'] = subject
+    msg.attach(MIMEText(body, 'plain'))
+    
+    try:
+        with smtplib.SMTP('smtp-mail.outlook.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(msg)
+        return True
+    except Exception as e:
+        st.error(f"Error sending confirmation email: {str(e)}")
+        return False
 
 def submit_application():
     with st.form("application_form", clear_on_submit=True):
@@ -72,7 +105,6 @@ def submit_application():
             }
             st.session_state.review_stage = True
 
-    # This is outside the form
     if submitted:
         st.success("Application submitted successfully!")
         st.write("Review your application:")

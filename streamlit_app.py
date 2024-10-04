@@ -28,6 +28,11 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed):
     # Use Streamlit secrets for email credentials
     sender_email = st.secrets["email"]["SENDER_EMAIL"]
     sender_password = st.secrets["email"]["SENDER_PASSWORD"]
+    print("Available secret keys:", st.secrets.keys())
+if "email" in st.secrets:
+    print("Email secret keys:", st.secrets["email"].keys())
+else:
+    print("Email secrets not found")
     
     if not sender_email or not sender_password:
         st.error("Sender email or password not set in Streamlit secrets.")

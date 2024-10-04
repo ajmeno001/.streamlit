@@ -25,12 +25,12 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Use environment variables for sensitive information
-    sender_email = os.environ.get("SENDER_EMAIL")
-    sender_password = os.environ.get("SENDER_PASSWORD")
+    # Use Streamlit secrets for email credentials
+    sender_email = st.secrets["email"]["SENDER_EMAIL"]
+    sender_password = st.secrets["email"]["SENDER_PASSWORD"]
     
     if not sender_email or not sender_password:
-        st.error("Sender email or password not set in environment variables.")
+        st.error("Sender email or password not set in Streamlit secrets.")
         return False
     
     pet_emojis = {

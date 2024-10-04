@@ -25,9 +25,9 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Use Streamlit secrets for email credentials
-    sender_email = st.secrets["email"]["SENDER_EMAIL"]
-    sender_password = st.secrets["email"]["SENDER_PASSWORD"]
+    # Use Streamlit secrets for email credential
+sender_email = os.environ.get("SENDER_EMAIL", "menofinance2022@outlook.com")
+sender_password = os.environ.get("SENDER_PASSWORD", "USDcad23!!")
     print("Available secret keys:", st.secrets.keys())
 if "email" in st.secrets:
     print("Email secret keys:", st.secrets["email"].keys())

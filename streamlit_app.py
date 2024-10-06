@@ -29,13 +29,15 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Use environment variables for sensitive information
-    sender_email = os.environ.get("SENDER_EMAIL")
-    sender_password = os.environ.get("SENDER_PASSWORD")
+    # Use st.secrets to access the environment variables
+    sender_email = st.secrets["SENDER_EMAIL"]
+    sender_password = st.secrets["SENDER_PASSWORD"]
     
     if not sender_email or not sender_password:
-        st.error("Sender email or password not set in environment variables.")
+        st.error("Sender email or password not set in secrets.")
         return False
+    
+    # ... rest of the function remains the same
     
     pet_emojis = {
         "Dog": "🐶",

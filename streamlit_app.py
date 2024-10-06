@@ -5,6 +5,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file (for local development)
+load_dotenv()
 
 st.title("🐶🐱 Pet Adoption Application 🐰🦎")
 st.markdown("Enter your application details below to give a furry (or scaly) friend a forever home! 🏠💖")
@@ -25,18 +29,12 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Use Streamlit secrets for email credentials
-    sender_email = st.secrets["email"]["SENDER_EMAIL"]
-    sender_password = st.secrets["email"]["SENDER_PASSWORD"]
-    
-    print("Available secret keys:", st.secrets.keys())
-    if "email" in st.secrets:
-        print("Email secret keys:", st.secrets["email"].keys())
-    else:
-        print("Email secrets not found")
+    # Use environment variables for sensitive information
+    sender_email = os.environ.get("SENDER_EMAIL")
+    sender_password = os.environ.get("SENDER_PASSWORD")
     
     if not sender_email or not sender_password:
-        st.error("Sender email or password not set in Streamlit secrets.")
+        st.error("Sender email or password not set in environment variables.")
         return False
     
     pet_emojis = {

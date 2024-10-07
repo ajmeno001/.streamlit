@@ -91,9 +91,9 @@ def submit_application():
             zip_code = st.text_input("Zip")
         
         st.subheader("Pet Information")
-        dog_breed = st.selectbox("Select Dog Breed", BREED_OPTIONS["Dog"], key="dog_breed")
-        cat_breed = st.selectbox("Select Cat Breed", BREED_OPTIONS["Cat"], key="cat_breed")
-        reptile_breed = st.selectbox("Select Reptile Breed", BREED_OPTIONS["Reptile"], key="reptile_breed")
+        dog_breed = st.selectbox("Select Dog Breed 🐶", BREED_OPTIONS["Dog"], key="dog_breed")
+        cat_breed = st.selectbox("Select Cat Breed 🐱", BREED_OPTIONS["Cat"], key="cat_breed")
+        reptile_breed = st.selectbox("Select Reptile Breed 🦎", BREED_OPTIONS["Reptile"], key="reptile_breed")
 
         submitted = st.form_submit_button("Submit Application")
 

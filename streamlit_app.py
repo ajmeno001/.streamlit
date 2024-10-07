@@ -33,21 +33,25 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 @st.cache_data(ttl=5)
 def load_data():
     try:
-        data = conn.read(worksheet=WORKSHEET_NAME, usecols=list(range(9)), ttl=5)
-        return data if not data.empty else pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Pet Type", "Pet Breed"])
+        data = conn.read(worksheet=WORKSHEET_NAME, usecols=list(range(11)), ttl=5)
+        return data if not data.empty else pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Dog Breed", "Cat Breed", "Reptile Breed"])
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
-        return pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Pet Type", "Pet Breed"])
+        return pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Dog Breed", "Cat Breed", "Reptile Breed"])
 
-def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    pet_emoji = PET_EMOJIS.get(pet_type, "")
-    
+def send_confirmation_email(email, first_name, dog_breed, cat_breed, reptile_breed):
     subject = "Pet Adoption Application Confirmation"
     body = f"""
     Dear {first_name},
 
-    Thank you for submitting your pet adoption application for a {pet_emoji} {pet_breed} {pet_type}. 
-    We have received your application and will review it shortly.
+    Thank you for submitting your pet adoption application. 
+    We have received your application for the following:
+    
+    Dog: {dog_breed if dog_breed != "None" else "Not selected"}
+    Cat: {cat_breed if cat_breed != "None" else "Not selected"}
+    Reptile: {reptile_breed if reptile_breed != "None" else "Not selected"}
+
+    We will review it shortly.
 
     Best regards,
     The Pet Adoption Team
@@ -87,8 +91,9 @@ def submit_application():
             zip_code = st.text_input("Zip")
         
         st.subheader("Pet Information")
-        pet_type = st.selectbox("Select Pet Type", ["Dog", "Cat", "Reptile"], key="pet_type")
-        pet_breed = st.selectbox("Select Breed", BREED_OPTIONS[pet_type], key="pet_breed")
+        dog_breed = st.selectbox("Select Dog Breed", BREED_OPTIONS["Dog"], key="dog_breed")
+        cat_breed = st.selectbox("Select Cat Breed", BREED_OPTIONS["Cat"], key="cat_breed")
+        reptile_breed = st.selectbox("Select Reptile Breed", BREED_OPTIONS["Reptile"], key="reptile_breed")
 
         submitted = st.form_submit_button("Submit Application")
 
@@ -99,6 +104,8 @@ def submit_application():
                 st.error("Please enter a valid email address.")
             elif not validate_zip_code(zip_code):
                 st.error("Please enter a valid 5-digit zip code.")
+            elif dog_breed == "None" and cat_breed == "None" and reptile_breed == "None":
+                st.error("Please select at least one pet breed.")
             else:
                 st.session_state.application_data = {
                     "First Name": first_name,
@@ -108,8 +115,9 @@ def submit_application():
                     "City": city,
                     "State": state,
                     "Zip": zip_code,
-                    "Pet Type": pet_type,
-                    "Pet Breed": pet_breed
+                    "Dog Breed": dog_breed,
+                    "Cat Breed": cat_breed,
+                    "Reptile Breed": reptile_breed
                 }
                 st.session_state.review_stage = True
                 st.rerun()
@@ -144,8 +152,9 @@ def main():
                         
                         if send_confirmation_email(st.session_state.application_data["Email"], 
                                                    st.session_state.application_data["First Name"],
-                                                   st.session_state.application_data["Pet Type"],
-                                                   st.session_state.application_data["Pet Breed"]):
+                                                   st.session_state.application_data["Dog Breed"],
+                                                   st.session_state.application_data["Cat Breed"],
+                                                   st.session_state.application_data["Reptile Breed"]):
                             st.success("Confirmation email sent!")
                         else:
                             st.warning("Confirmation email could not be sent. Please check your email address.")

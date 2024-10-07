@@ -74,7 +74,6 @@ def validate_zip_code(zip_code):
 
 def update_pet_type():
     st.session_state.pet_breed = BREED_OPTIONS[st.session_state.pet_type][0]
-    st.rerun()
 
 def submit_application():
     with st.form("application_form"):

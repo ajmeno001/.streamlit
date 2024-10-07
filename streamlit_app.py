@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 from streamlit_gsheets import GSheetsConnection
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import os
+import yagmail
 
 st.title("🐶🐱 Animal Adoption System 🐰🦎")
 
@@ -24,9 +21,9 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    sender_email = "menofinance2022@outlook.com"
-    sender_password = "USDcad23!!"
-    
+    sender_email = "your_gmail@gmail.com"  # Replace with your Gmail address
+    app_password = "your_app_password"  # Replace with your app password
+
     pet_emojis = {
         "Dog": "🐶",
         "Cat": "🐱",
@@ -44,17 +41,14 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed):
     Best regards,
     The Pet Adoption Team
     """
-    msg = MIMEMultipart()
-    msg['From'] = sender_email
-    msg['To'] = email
-    msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
     
     try:
-        with smtplib.SMTP('smtp-mail.outlook.com', 587) as server:
-            server.starttls()
-            server.login(sender_email, sender_password)
-            server.send_message(msg)
+        yag = yagmail.SMTP(sender_email, app_password)
+        yag.send(
+            to=email,
+            subject=subject,
+            contents=body
+        )
         return True
     except Exception as e:
         st.error(f"Error sending confirmation email: {str(e)}")

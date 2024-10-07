@@ -6,8 +6,8 @@ import re
 
 # Configuration
 WORKSHEET_NAME = "PET"
-SENDER_EMAIL = "bridgettemeno@gmail.com"  # Replace with your Gmail address
-APP_PASSWORD = "aiia irhe xlal lhgp"  # Replace with your app password
+SENDER_EMAIL = "bridgettemeno@gmail.com"
+APP_PASSWORD = "aiia irhe xlal lhgp"
 
 # Emoji mappings
 PET_EMOJIS = {
@@ -16,11 +16,11 @@ PET_EMOJIS = {
     "Reptile": "🦎"
 }
 
-# Breed options
+# Updated breed options
 BREED_OPTIONS = {
-    "Dog": ["Labrador Retriever", "German Shepherd", "Golden Retriever", "Bulldog", "Beagle", "Poodle", "Rottweiler", "Boxer", "Dachshund", "Siberian Husky"],
-    "Cat": ["Siamese", "Persian", "Maine Coon", "Sphynx", "Bengal", "British Shorthair", "Scottish Fold", "Ragdoll", "Russian Blue", "American Shorthair"],
-    "Reptile": ["Bearded Dragon", "Leopard Gecko", "Ball Python", "Corn Snake", "Green Iguana", "Blue-Tongued Skink", "Crested Gecko", "Red-Eared Slider", "Chameleon", "Tortoise"]
+    "Dog": ["None", "Labrador Retriever", "German Shepherd", "Golden Retriever", "Bulldog", "Beagle", "Poodle", "Rottweiler", "Boxer", "Dachshund", "Siberian Husky"],
+    "Cat": ["None", "Siamese", "Persian", "Maine Coon", "Sphynx", "Bengal", "British Shorthair", "Scottish Fold", "Ragdoll", "Russian Blue", "American Shorthair"],
+    "Reptile": ["None", "Bearded Dragon", "Leopard Gecko", "Ball Python", "Corn Snake", "Green Iguana", "Blue-Tongued Skink", "Crested Gecko", "Red-Eared Slider", "Chameleon", "Tortoise"]
 }
 
 # Initialize Streamlit
@@ -163,10 +163,6 @@ def main():
             st.session_state.application_submitted = False
             st.session_state.review_stage = False
             st.rerun()
-
-    # Uncomment these lines if you want to display existing applications
-    # st.subheader("🐾 Existing Applications")
-    # st.dataframe(existing_data)
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 from dotenv import load_dotenv
+import time
 
 # Load environment variables from .env file (for local development)
 load_dotenv()
@@ -37,8 +38,6 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed):
         st.error("Sender email or password not set in secrets.")
         return False
     
-    # ... rest of the function remains the same
-    
     pet_emojis = {
         "Dog": "🐶",
         "Cat": "🐱",
@@ -63,13 +62,15 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed):
     msg.attach(MIMEText(body, 'plain'))
     
     try:
-        with smtplib.SMTP_SSL('smtp.office365.com', 465) as server:
+        with smtplib.SMTP('smtp.office365.com', 587) as server:
+            server.starttls()
             server.login(sender_email, sender_password)
             server.send_message(msg)
+        st.success(f"Confirmation email sent to {email}")
         return True
     except Exception as e:
         st.error(f"Error sending confirmation email: {str(e)}")
-        print(f"Detailed error: {e}")  # This will print to your console/logs
+        st.error(f"Detailed error: {repr(e)}")
         return False
 
 def submit_application():
@@ -162,13 +163,17 @@ if not st.session_state.application_submitted:
                 st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                 st.session_state.application_submitted = True
                 
-                if send_confirmation_email(st.session_state.application_data["Email"], 
-                                           st.session_state.application_data["First Name"],
-                                           st.session_state.application_data["Pet Type"],
-                                           st.session_state.application_data["Pet Breed"]):
-                    st.success("Confirmation email sent!")
+                email_sent = send_confirmation_email(
+                    st.session_state.application_data["Email"], 
+                    st.session_state.application_data["First Name"],
+                    st.session_state.application_data["Pet Type"],
+                    st.session_state.application_data["Pet Breed"]
+                )
+                
+                if email_sent:
+                    st.success("Confirmation email sent successfully!")
                 else:
-                    st.warning("Confirmation email could not be sent. Please check your email address.")
+                    st.warning("Confirmation email could not be sent. Please check your email address and try again later.")
                 
                 st.balloons()
             except Exception as e:

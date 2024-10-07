@@ -30,12 +30,31 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Use st.secrets to access the environment variables
     sender_email = st.secrets["SENDER_EMAIL"]
     sender_password = st.secrets["SENDER_PASSWORD"]
     
     if not sender_email or not sender_password:
         st.error("Sender email or password not set in secrets.")
+        return False
+    
+    st.write(f"Attempting to send email to: {email}")  # Debug line
+    
+    # ... (rest of the function remains the same)
+    
+    try:
+        with smtplib.SMTP('smtp.office365.com', 587) as server:
+            st.write("Connecting to SMTP server...")  # Debug line
+            server.starttls()
+            st.write("Starting TLS...")  # Debug line
+            server.login(sender_email, sender_password)
+            st.write("Logged in successfully...")  # Debug line
+            server.send_message(msg)
+            st.write("Message sent successfully...")  # Debug line
+        st.success(f"Confirmation email sent to {email}")
+        return True
+    except Exception as e:
+        st.error(f"Error sending confirmation email: {str(e)}")
+        st.error(f"Detailed error: {repr(e)}")
         return False
     
     pet_emojis = {

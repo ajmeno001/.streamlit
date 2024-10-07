@@ -87,7 +87,7 @@ def submit_application():
             zip_code = st.text_input("Zip")
         
         st.subheader("Pet Information")
-        pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"], key="pet_type")
+        pet_type = st.selectbox("Select Pet Type", ["Dog", "Cat", "Reptile"], key="pet_type")
         pet_breed = st.selectbox("Select Breed", BREED_OPTIONS[pet_type], key="pet_breed")
 
         submitted = st.form_submit_button("Submit Application")

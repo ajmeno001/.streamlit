@@ -24,9 +24,8 @@ def load_data():
 existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
-    # Use environment variables for sensitive information
-    sender_email = os.environ.get("SENDER_EMAIL", "menofinance2022@outlook.com")
-    sender_password = os.environ.get("SENDER_PASSWORD", "USDcad23!!")
+    sender_email = "menofinance2022@outlook.com"
+    sender_password = "USDcad23!!"
     
     pet_emojis = {
         "Dog": "🐶",
@@ -52,7 +51,8 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed):
     msg.attach(MIMEText(body, 'plain'))
     
     try:
-        with smtplib.SMTP_SSL('smtp.office365.com', 465) as server:
+        with smtplib.SMTP('smtp-mail.outlook.com', 587) as server:
+            server.starttls()
             server.login(sender_email, sender_password)
             server.send_message(msg)
         return True

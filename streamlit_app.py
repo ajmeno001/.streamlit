@@ -22,7 +22,7 @@ existing_data = load_data()
 
 def send_confirmation_email(email, first_name, pet_type, pet_breed):
     sender_email = "bridgettemeno@gmail.com"  # Replace with your Gmail address
-    app_password = "Sporty09!!"  # Replace with your app password
+    app_password = "aiia irhe xlal lhgp"  # Replace with your app password
 
     pet_emojis = {
         "Dog": "🐶",

@@ -72,6 +72,10 @@ def validate_email(email):
 def validate_zip_code(zip_code):
     return len(zip_code) == 5 and zip_code.isdigit()
 
+def update_pet_type():
+    st.session_state.pet_breed = BREED_OPTIONS[st.session_state.pet_type][0]
+    st.rerun()
+
 def submit_application():
     with st.form("application_form"):
         st.subheader("Contact Information")
@@ -87,7 +91,7 @@ def submit_application():
             zip_code = st.text_input("Zip")
         
         st.subheader("Pet Information")
-        pet_type = st.selectbox("Select Pet Type", ["Dog", "Cat", "Reptile"], key="pet_type")
+        pet_type = st.selectbox("Select Pet Type", ["Dog", "Cat", "Reptile"], key="pet_type", on_change=update_pet_type)
         pet_breed = st.selectbox("Select Breed", BREED_OPTIONS[pet_type], key="pet_breed")
 
         submitted = st.form_submit_button("Submit Application")
@@ -122,6 +126,12 @@ def main():
 
     if 'application_submitted' not in st.session_state:
         st.session_state.application_submitted = False
+
+    if 'pet_type' not in st.session_state:
+        st.session_state.pet_type = "Dog"
+
+    if 'pet_breed' not in st.session_state:
+        st.session_state.pet_breed = BREED_OPTIONS["Dog"][0]
 
     if not st.session_state.application_submitted:
         if not st.session_state.review_stage:

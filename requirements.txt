@@ -3,4 +3,4 @@ pandas==2.2.2
 st-gsheets-connection
 python-dotenv
 yagmail
-
+matplotlib

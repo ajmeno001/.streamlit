@@ -146,7 +146,11 @@ def main():
         else:
             st.subheader("Contact Information Summary")
             for key, value in st.session_state.application_data.items():
-                st.write(f"{key}: {value}")
+                if key in ["Dog Breed", "Cat Breed", "Reptile Breed"]:
+                    if value != "None":
+                        st.write(f"{key}: {value}")
+                else:
+                    st.write(f"{key}: {value}")
             
             col1, col2 = st.columns(2)
             with col1:

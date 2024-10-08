@@ -40,16 +40,24 @@ def load_data():
         return pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Dog Breed", "Cat Breed", "Reptile Breed"])
 
 def send_confirmation_email(email, first_name, dog_breed, cat_breed, reptile_breed):
+    selected_pets = []
+    if dog_breed != "None":
+        selected_pets.append(f"{PET_EMOJIS['Dog']} Dog: {dog_breed}")
+    if cat_breed != "None":
+        selected_pets.append(f"{PET_EMOJIS['Cat']} Cat: {cat_breed}")
+    if reptile_breed != "None":
+        selected_pets.append(f"{PET_EMOJIS['Reptile']} Reptile: {reptile_breed}")
+
+    pet_info = "\n".join(selected_pets)
+
     subject = "Pet Adoption Application Confirmation"
     body = f"""
     Dear {first_name},
 
-    Thank you for submitting your pet adoption application. 
+    Thank you for submitting your pet adoption application.
     We have received your application for the following:
-    
-    Dog: {dog_breed if dog_breed != "None" else "Not selected"}
-    Cat: {cat_breed if cat_breed != "None" else "Not selected"}
-    Reptile: {reptile_breed if reptile_breed != "None" else "Not selected"}
+
+    {pet_info}
 
     We will review it shortly.
 

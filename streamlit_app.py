@@ -144,7 +144,7 @@ def main():
         if not st.session_state.review_stage:
             submit_application()
         else:
-            st.subheader("Review Your Application")
+            st.subheader("Contact Information Summary")
             for key, value in st.session_state.application_data.items():
                 st.write(f"{key}: {value}")
             

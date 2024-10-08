@@ -98,7 +98,8 @@ def submit_application():
             state = st.text_input("State")
             zip_code = st.text_input("Zip")
         
-        st.subheader("Pet Information")
+        st.title("Pet Information")
+        st.subheader("Select the type of pet and breed you wish to adopt.")
         dog_breed = st.selectbox("Select Dog Breed 🐶", BREED_OPTIONS["Dog"], key="dog_breed")
         cat_breed = st.selectbox("Select Cat Breed 🐱", BREED_OPTIONS["Cat"], key="cat_breed")
         reptile_breed = st.selectbox("Select Reptile Breed 🦎", BREED_OPTIONS["Reptile"], key="reptile_breed")

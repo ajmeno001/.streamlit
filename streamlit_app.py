@@ -27,13 +27,10 @@ BREED_OPTIONS = {
 # Pet names for randomizer
 PET_NAMES = [
     "Buddy", "Max", "Charlie", "Lucy", "Bailey", "Cooper", 
-    "Daisy", "Luna", "Rocky", "Molly","Jack", 
-    "Sadie", "Toby", "Chloe",  "Lola",
-    "Bear","Duke","Bella","Oliver","Sophie"
+    "Daisy", "Luna", "Rocky", "Molly", "Jack", 
+    "Sadie", "Toby", "Chloe", "Lola",
+    "Bear", "Duke", "Bella", "Oliver", "Sophie"
 ]
-
-def get_random_pet_name():
-    return random.choice(PET_NAMES)
 
 # Initialize Streamlit
 st.set_page_config(page_title="Animal Adoption System", page_icon="🐾", layout="wide")
@@ -45,24 +42,20 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 @st.cache_data(ttl=5)
 def load_data():
     try:
-        data = conn.read(worksheet=WORKSHEET_NAME, usecols=list(range(11)), ttl=5)
-        return data if not data.empty else pd.DataFrame(columns=["First Name", 
-            "Last Name","Email","Street Address","City","State","Zip",
-            "Dog Breed","Cat Breed","Reptile Breed"])
+        data = conn.read(worksheet=WORKSHEET_NAME, usecols=list(range(14)), ttl=5)
+        return data if not data.empty else pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Dog Breed", "Cat Breed", "Reptile Breed", "Dog Name", "Cat Name", "Reptile Name"])
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
-        return pd.DataFrame(columns=["First Name",
-            "Last Name","Email","Street Address","City","State",
-            "Zip","Dog Breed","Cat Breed","Reptile Breed"])
+        return pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Dog Breed", "Cat Breed", "Reptile Breed", "Dog Name", "Cat Name", "Reptile Name"])
 
-def send_confirmation_email(email, first_name, dog_breed, cat_breed, reptile_breed):
+def send_confirmation_email(email, first_name, dog_breed, cat_breed, reptile_breed, dog_name, cat_name, reptile_name):
     selected_pets = []
     if dog_breed != "None":
-        selected_pets.append(f"{PET_EMOJIS['Dog']} Dog: {dog_breed}")
+        selected_pets.append(f"{PET_EMOJIS['Dog']} Dog: {dog_breed} (Name: {dog_name})")
     if cat_breed != "None":
-        selected_pets.append(f"{PET_EMOJIS['Cat']} Cat: {cat_breed}")
+        selected_pets.append(f"{PET_EMOJIS['Cat']} Cat: {cat_breed} (Name: {cat_name})")
     if reptile_breed != "None":
-        selected_pets.append(f"{PET_EMOJIS['Reptile']} Reptile: {reptile_breed}")
+        selected_pets.append(f"{PET_EMOJIS['Reptile']} Reptile: {reptile_breed} (Name: {reptile_name})")
 
     pet_info = "\n".join(selected_pets)
 
@@ -99,6 +92,9 @@ def validate_email(email):
 
 def validate_zip_code(zip_code):
     return len(zip_code) == 5 and zip_code.isdigit()
+
+def get_random_pet_name():
+    return random.choice(PET_NAMES)
 
 def submit_application():
     with st.form("application_form"):
@@ -142,11 +138,12 @@ def submit_application():
                     "Zip": zip_code,
                     "Dog Breed": dog_breed,
                     "Cat Breed": cat_breed,
-                    "Reptile Breed": reptile_breed
+                    "Reptile Breed": reptile_breed,
+                    "Dog Name": get_random_pet_name() if dog_breed != "None" else None,
+                    "Cat Name": get_random_pet_name() if cat_breed != "None" else None,
+                    "Reptile Name": get_random_pet_name() if reptile_breed != "None" else None
                 }
                 st.session_state.review_stage = True
-                # Generate a random pet name and store it in session state
-                st.session_state.random_pet_name = get_random_pet_name()
                 st.rerun()
 
 def main():
@@ -163,31 +160,18 @@ def main():
             submit_application()
         else:
             st.subheader("Contact Information Summary")
-            contact_info = ["First Name", 
-                            'Last Name',
-                            'Email', 
-                            'Street Address', 
-                            'City', 
-                            'State', 
-                            'Zip']
-            
+            contact_info = ["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip"]
             for key in contact_info:
                 st.write(f"{key}: {st.session_state.application_data[key]}")
             
-            # Display Pet Information Summary with random pet name
             st.subheader("Pet Information Summary")
-            st.write(f"Pet Name: {st.session_state.random_pet_name}")
-            
-            pet_info = ["Dog Breed",
-                         'Cat Breed',
-                         'Reptile Breed']
-            
-            for key in pet_info:
-                if st.session_state.application_data[key] != 'None':
-                    st.write(f"{key}: {st.session_state.application_data[key]}")
+            pet_info = [("Dog Breed", "Dog Name"), ("Cat Breed", "Cat Name"), ("Reptile Breed", "Reptile Name")]
+            for breed_key, name_key in pet_info:
+                if st.session_state.application_data[breed_key] != "None":
+                    st.write(f"{breed_key}: {st.session_state.application_data[breed_key]}")
+                    st.write(f"Pet Name: {st.session_state.application_data[name_key]}")
             
             col1, col2 = st.columns(2)
-            
             with col1:
                 if st.button("🐾 Confirm and Submit Application"):
                     new_data = pd.DataFrame([st.session_state.application_data])
@@ -202,7 +186,10 @@ def main():
                                                    st.session_state.application_data["First Name"],
                                                    st.session_state.application_data["Dog Breed"],
                                                    st.session_state.application_data["Cat Breed"],
-                                                   st.session_state.application_data["Reptile Breed"]):
+                                                   st.session_state.application_data["Reptile Breed"],
+                                                   st.session_state.application_data["Dog Name"],
+                                                   st.session_state.application_data["Cat Name"],
+                                                   st.session_state.application_data["Reptile Name"]):
                             st.success("Confirmation email sent!")
                         else:
                             st.warning("Confirmation email could not be sent. Please check your email address.")
@@ -210,25 +197,15 @@ def main():
                         st.balloons()
                     except Exception as e:
                         st.error(f"Error submitting application: {str(e)}")
-            
             with col2:
                 if st.button("Edit Application"):
-                    # Reset review stage to allow editing of the application form
                     st.session_state.review_stage = False
-                    del st.session_state.random_pet_name  # Remove random pet name on edit
-                    # Rerun to show the form again
                     st.rerun()
-    
     else:
-        # Show success message after submission of application
         st.success("Your application has been submitted successfully!")
-        
         if st.button("🆕 Enter New Application"):
-            # Reset all session states for a new application entry
-            del st.session_state.application_submitted  
-            del st.session_state.review_stage  
-            del st.session_state.random_pet_name  
-            # Rerun to show the form again
+            st.session_state.application_submitted = False
+            st.session_state.review_stage = False
             st.rerun()
 
 if __name__ == "__main__":

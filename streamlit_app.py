@@ -6,8 +6,8 @@ import re
 
 # Configuration
 WORKSHEET_NAME = "PET"
-SENDER_EMAIL = "bridgettemeno@gmail.com"
-APP_PASSWORD = "aiia irhe xlal lhgp"
+SENDER_EMAIL = "petadoptionteam4@gmail.com"
+APP_PASSWORD = "uwdg bcvt fzcf dcbs"
 
 # Emoji mappings
 PET_EMOJIS = {

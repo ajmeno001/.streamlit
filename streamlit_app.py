@@ -145,12 +145,15 @@ def main():
             submit_application()
         else:
             st.subheader("Contact Information Summary")
-            for key, value in st.session_state.application_data.items():
-                if key in ["Dog Breed", "Cat Breed", "Reptile Breed"]:
-                    if value != "None":
-                        st.write(f"{key}: {value}")
-                else:
-                    st.write(f"{key}: {value}")
+            contact_info = ["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip"]
+            for key in contact_info:
+                st.write(f"{key}: {st.session_state.application_data[key]}")
+            
+            st.subheader("Pet Information Summary")
+            pet_info = ["Dog Breed", "Cat Breed", "Reptile Breed"]
+            for key in pet_info:
+                if st.session_state.application_data[key] != "None":
+                    st.write(f"{key}: {st.session_state.application_data[key]}")
             
             col1, col2 = st.columns(2)
             with col1:

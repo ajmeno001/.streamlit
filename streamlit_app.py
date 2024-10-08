@@ -3,6 +3,8 @@ import pandas as pd
 from streamlit_gsheets import GSheetsConnection
 import yagmail
 import re
+import time
+import matplotlib.pyplot as plt
 
 # Configuration
 WORKSHEET_NAME = "PET"
@@ -23,9 +25,45 @@ BREED_OPTIONS = {
     "Reptile": ["None", "Bearded Dragon", "Leopard Gecko", "Ball Python", "Corn Snake", "Green Iguana", "Blue-Tongued Skink", "Crested Gecko", "Red-Eared Slider", "Chameleon", "Tortoise"]
 }
 
+# Example image URLs (replace with actual URLs)
+BREED_IMAGES = {
+    "Dog": {
+        "Labrador Retriever": "https://example.com/labrador.jpg",
+        "German Shepherd": "https://example.com/german_shepherd.jpg",
+        # Add other breeds...
+    },
+    "Cat": {
+        "Siamese": "https://example.com/siamese.jpg",
+        "Persian": "https://example.com/persian.jpg",
+        # Add other breeds...
+    },
+    "Reptile": {
+        "Bearded Dragon": "https://i.pinimg.com/originals/c2/0a/9a/c20a9a2451c3fc2c45281f69dab1e547.jpg",
+        "Leopard Gecko": "https://wallpapercave.com/wp/9JtSjSW.jpg",
+        # Add other breeds...
+    }
+}
+
 # Initialize Streamlit
 st.set_page_config(page_title="Animal Adoption System", page_icon="🐾", layout="wide")
-st.title("🐶🐱 Animal Adoption System 🐰🦎")
+
+# Custom CSS
+st.markdown(
+    """
+    <style>
+    .reportview-container {
+        background-color: #f0f8ff;
+    }
+    .big-font {
+        font-size:30px !important;
+        font-weight: bold;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown("<p class='big-font'>🐶🐱 Animal Adoption System 🐰🦎</p>", unsafe_allow_html=True)
 
 # Initialize Google Sheets connection
 conn = st.connection("gsheets", type=GSheetsConnection)
@@ -86,7 +124,7 @@ def validate_zip_code(zip_code):
 
 def submit_application():
     with st.form("application_form"):
-        st.subheader("Contact Information")
+        st.markdown("### Contact Information")
         col1, col2 = st.columns(2)
         with col1:
             first_name = st.text_input("First Name")
@@ -98,7 +136,7 @@ def submit_application():
             state = st.text_input("State")
             zip_code = st.text_input("Zip")
         
-        st.subheader("Pet Information")
+        st.markdown("### Pet Information")
         dog_breed = st.selectbox("Select Dog Breed 🐶", BREED_OPTIONS["Dog"], key="dog_breed")
         cat_breed = st.selectbox("Select Cat Breed 🐱", BREED_OPTIONS["Cat"], key="cat_breed")
         reptile_breed = st.selectbox("Select Reptile Breed 🦎", BREED_OPTIONS["Reptile"], key="reptile_breed")
@@ -143,9 +181,21 @@ def main():
         if not st.session_state.review_stage:
             submit_application()
         else:
-            st.subheader("Review Your Application")
+            st.markdown("### Review Your Application")
             for key, value in st.session_state.application_data.items():
                 st.write(f"{key}: {value}")
+            
+            # Display selected breed images
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                if st.session_state.application_data["Dog Breed"] != "None":
+                    st.image(BREED_IMAGES["Dog"].get(st.session_state.application_data["Dog Breed"], "https://example.com/placeholder.jpg"), caption=st.session_state.application_data["Dog Breed"])
+            with col2:
+                if st.session_state.application_data["Cat Breed"] != "None":
+                    st.image(BREED_IMAGES["Cat"].get(st.session_state.application_data["Cat Breed"], "https://example.com/placeholder.jpg"), caption=st.session_state.application_data["Cat Breed"])
+            with col3:
+                if st.session_state.application_data["Reptile Breed"] != "None":
+                    st.image(BREED_IMAGES["Reptile"].get(st.session_state.application_data["Reptile Breed"], "https://example.com/placeholder.jpg"), caption=st.session_state.application_data["Reptile Breed"])
             
             col1, col2 = st.columns(2)
             with col1:
@@ -154,7 +204,11 @@ def main():
                     updated_data = pd.concat([existing_data, new_data], ignore_index=True)
                     
                     try:
-                        conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
+                        with st.spinner("Submitting your application..."):
+                            conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
+                            for i in range(100):
+                                time.sleep(0.02)
+                                st.progress(i + 1)
                         st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                         st.session_state.application_submitted = True
                         
@@ -180,6 +234,22 @@ def main():
             st.session_state.application_submitted = False
             st.session_state.review_stage = False
             st.rerun()
+
+    # Display chart of applications by pet type
+    st.markdown("### Application Statistics")
+    pet_types = ['Dog', 'Cat', 'Reptile']
+    applications = [
+        len(existing_data[existing_data['Dog Breed'] != 'None']),
+        len(existing_data[existing_data['Cat Breed'] != 'None']),
+        len(existing_data[existing_data['Reptile Breed'] != 'None'])
+    ]
+
+    fig, ax = plt.subplots()
+    ax.bar(pet_types, applications)
+    ax.set_title('Applications by Pet Type')
+    ax.set_xlabel('Pet Type')
+    ax.set_ylabel('Number of Applications')
+    st.pyplot(fig)
 
 if __name__ == "__main__":
     main()

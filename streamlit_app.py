@@ -3,6 +3,7 @@ import pandas as pd
 from streamlit_gsheets import GSheetsConnection
 import yagmail
 import re
+import random
 
 # Configuration
 WORKSHEET_NAME = "PET"
@@ -23,6 +24,17 @@ BREED_OPTIONS = {
     "Reptile": ["None", "Bearded Dragon", "Leopard Gecko", "Ball Python", "Corn Snake", "Green Iguana", "Blue-Tongued Skink", "Crested Gecko", "Red-Eared Slider", "Chameleon", "Tortoise"]
 }
 
+# Pet names for randomizer
+PET_NAMES = [
+    "Buddy", "Max", "Charlie", "Lucy", "Bailey", "Cooper", 
+    "Daisy", "Luna", "Rocky", "Molly","Jack", 
+    "Sadie", "Toby", "Chloe",  "Lola",
+    "Bear","Duke","Bella","Oliver","Sophie"
+]
+
+def get_random_pet_name():
+    return random.choice(PET_NAMES)
+
 # Initialize Streamlit
 st.set_page_config(page_title="Animal Adoption System", page_icon="🐾", layout="wide")
 st.title("🐶🐱 Animal Adoption System 🐰🦎")
@@ -34,10 +46,14 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 def load_data():
     try:
         data = conn.read(worksheet=WORKSHEET_NAME, usecols=list(range(11)), ttl=5)
-        return data if not data.empty else pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Dog Breed", "Cat Breed", "Reptile Breed"])
+        return data if not data.empty else pd.DataFrame(columns=["First Name", 
+            "Last Name","Email","Street Address","City","State","Zip",
+            "Dog Breed","Cat Breed","Reptile Breed"])
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
-        return pd.DataFrame(columns=["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip", "Dog Breed", "Cat Breed", "Reptile Breed"])
+        return pd.DataFrame(columns=["First Name",
+            "Last Name","Email","Street Address","City","State",
+            "Zip","Dog Breed","Cat Breed","Reptile Breed"])
 
 def send_confirmation_email(email, first_name, dog_breed, cat_breed, reptile_breed):
     selected_pets = []
@@ -129,6 +145,8 @@ def submit_application():
                     "Reptile Breed": reptile_breed
                 }
                 st.session_state.review_stage = True
+                # Generate a random pet name and store it in session state
+                st.session_state.random_pet_name = get_random_pet_name()
                 st.rerun()
 
 def main():
@@ -145,17 +163,31 @@ def main():
             submit_application()
         else:
             st.subheader("Contact Information Summary")
-            contact_info = ["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip"]
+            contact_info = ["First Name", 
+                            'Last Name',
+                            'Email', 
+                            'Street Address', 
+                            'City', 
+                            'State', 
+                            'Zip']
+            
             for key in contact_info:
                 st.write(f"{key}: {st.session_state.application_data[key]}")
             
+            # Display Pet Information Summary with random pet name
             st.subheader("Pet Information Summary")
-            pet_info = ["Dog Breed", "Cat Breed", "Reptile Breed"]
+            st.write(f"Pet Name: {st.session_state.random_pet_name}")
+            
+            pet_info = ["Dog Breed",
+                         'Cat Breed',
+                         'Reptile Breed']
+            
             for key in pet_info:
-                if st.session_state.application_data[key] != "None":
+                if st.session_state.application_data[key] != 'None':
                     st.write(f"{key}: {st.session_state.application_data[key]}")
             
             col1, col2 = st.columns(2)
+            
             with col1:
                 if st.button("🐾 Confirm and Submit Application"):
                     new_data = pd.DataFrame([st.session_state.application_data])
@@ -178,15 +210,25 @@ def main():
                         st.balloons()
                     except Exception as e:
                         st.error(f"Error submitting application: {str(e)}")
+            
             with col2:
                 if st.button("Edit Application"):
+                    # Reset review stage to allow editing of the application form
                     st.session_state.review_stage = False
+                    del st.session_state.random_pet_name  # Remove random pet name on edit
+                    # Rerun to show the form again
                     st.rerun()
+    
     else:
+        # Show success message after submission of application
         st.success("Your application has been submitted successfully!")
+        
         if st.button("🆕 Enter New Application"):
-            st.session_state.application_submitted = False
-            st.session_state.review_stage = False
+            # Reset all session states for a new application entry
+            del st.session_state.application_submitted  
+            del st.session_state.review_stage  
+            del st.session_state.random_pet_name  
+            # Rerun to show the form again
             st.rerun()
 
 if __name__ == "__main__":

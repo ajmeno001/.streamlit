@@ -4,7 +4,17 @@ from streamlit_gsheets import GSheetsConnection
 import yagmail
 import re
 import random
-
+st.markdown(
+    """
+    <style>
+    .stButton>button {
+        color: white;
+        background-color: blue;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Configuration
 WORKSHEET_NAME = "PET"
 SENDER_EMAIL = "petadoptionteam4@gmail.com"

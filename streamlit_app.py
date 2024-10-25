@@ -43,14 +43,44 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 def load_data():
     try:
         data = conn.read(worksheet=WORKSHEET_NAME, usecols=list(range(15)), ttl=5)
-        return data if not data.empty else pd.DataFrame(columns=["First Name",
-                                                                 # Add other columns here...
-                                                                 ])
+        return data if not data.empty else pd.DataFrame(columns=[
+            "First Name",
+            "Last Name",
+            "Email",
+            "Street Address",
+            "City",
+            "State",
+            "Zip",
+            "Dog Breed",
+            "Cat Breed",
+            "Reptile Breed",
+            "Dog Name",
+            "Cat Name",
+            "Reptile Name",
+            "Image URL",
+            "Other Column1",
+            "Other Column2"
+        ])
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
-        return pd.DataFrame(columns=["First Name",
-                                     # Add other columns here...
-                                     ])
+        return pd.DataFrame(columns=[
+            "First Name",
+            "Last Name",
+            "Email",
+            "Street Address",
+            "City",
+            "State",
+            "Zip",
+            "Dog Breed",
+            "Cat Breed",
+            "Reptile Breed",
+            "Dog Name",
+            "Cat Name",
+            "Reptile Name",
+            "Image URL",
+            "Other Column1",
+            "Other Column2"
+        ])
 
 def send_confirmation_email(email, first_name, dog_breed, cat_breed, reptile_breed, dog_name, cat_name, reptile_name):
     # Email sending logic...

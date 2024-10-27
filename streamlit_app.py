@@ -19,19 +19,19 @@ PET_EMOJIS = {
 # Pet information
 PETS = {
     "Dog": [
-        {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "image": "https://example.com/labrador.jpg"},
-        {"breed": "German Shepherd", "name": "Max", "age": "3 years", "image": "https://example.com/german_shepherd.jpg"},
-        {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://example.com/golden_retriever.jpg"},
+        {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "image": "https://upload.wikimedia.org/wikipedia/commons/f/f8/Labrador-retriever.jpg", "size": (300, 200)},
+        {"breed": "German Shepherd", "name": "Max", "age": "3 years", "image": "https://example.com/german_shepherd.jpg", "size": (300, 200)},
+        {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://example.com/golden_retriever.jpg", "size": (300, 200)},
     ],
     "Cat": [
-        {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://example.com/siamese.jpg"},
-        {"breed": "Persian", "name": "Bella", "age": "2 years", "image": "https://example.com/persian.jpg"},
-        {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://example.com/maine_coon.jpg"},
+        {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://example.com/siamese.jpg", "size": (300, 200)},
+        {"breed": "Persian", "name": "Bella", "age": "2 years", "image": "https://example.com/persian.jpg", "size": (300, 200)},
+        {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://example.com/maine_coon.jpg", "size": (300, 200)},
     ],
     "Reptile": [
-        {"breed": "Bearded Dragon", "name": "Spike", "age": "1 year", "image": "https://example.com/bearded_dragon.jpg"},
-        {"breed": "Leopard Gecko", "name": "Spots", "age": "2 years", "image": "https://example.com/leopard_gecko.jpg"},
-        {"breed": "Ball Python", "name": "Slinky", "age": "3 years", "image": "https://example.com/ball_python.jpg"},
+        {"breed": "Bearded Dragon", "name": "Spike", "age": "1 year", "image": "https://example.com/bearded_dragon.jpg", "size": (300, 200)},
+        {"breed": "Leopard Gecko", "name": "Spots", "age": "2 years", "image": "https://example.com/leopard_gecko.jpg", "size": (300, 200)},
+        {"breed": "Ball Python", "name": "Slinky", "age": "3 years", "image": "https://example.com/ball_python.jpg", "size": (300, 200)},
     ]
 }
 

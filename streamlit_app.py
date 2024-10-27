@@ -26,7 +26,7 @@ PETS = {
     "Cat": [
         {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://fishsubsidy.org/wp-content/uploads/2020/01/siamese-cat-health.jpg", "size": (300, 200)},
         {"breed": "Persian", "name": "Bella", "age": "2 years", "image": "https://media.cnn.com/api/v1/images/stellar/prod/181101165831-15-week-in-photos-1102-restricted.jpg?q=w_2000,h_1125,x_0,y_0,c_fill/h_778", "size": (300, 200)},
-        {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://example.com/maine_coon.jpg", "size": (300, 200)},
+        {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://upload.wikimedia.org/wikipedia/commons/5/57/Cat-MaineCoon-Lucy.png", "size": (300, 200)},
     ],
     "Reptile": [
         {"breed": "Bearded Dragon", "name": "Spike", "age": "1 year", "image": "https://example.com/bearded_dragon.jpg", "size": (300, 200)},

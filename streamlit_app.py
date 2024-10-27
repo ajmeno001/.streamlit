@@ -122,7 +122,21 @@ def submit_application():
             zip_code = st.text_input("Zip")
         
         st.title("Pet Selection")
-        display_pet_options()
+        st.subheader("Select a pet type and then choose a pet to adopt.")
+        
+        pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"])
+        
+        selected_pet = None
+        for pet in PETS[pet_type]:
+            col1, col2 = st.columns([1, 3])
+            with col1:
+                st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+            with col2:
+                st.write(f"**Name:** {pet['name']}")
+                st.write(f"**Breed:** {pet['breed']}")
+                st.write(f"**Age:** {pet['age']}")
+                if st.checkbox(f"Select {pet['name']}", key=f"{pet_type}_{pet['name']}"):
+                    selected_pet = pet
 
         submitted = st.form_submit_button("Submit Application")
 
@@ -133,7 +147,7 @@ def submit_application():
                 st.error("Please enter a valid email address.")
             elif not validate_zip_code(zip_code):
                 st.error("Please enter a valid 5-digit zip code.")
-            elif 'selected_pet' not in st.session_state:
+            elif selected_pet is None:
                 st.error("Please select a pet for adoption.")
             else:
                 st.session_state.application_data = {
@@ -144,10 +158,10 @@ def submit_application():
                     "City": city,
                     "State": state,
                     "Zip": zip_code,
-                    "Pet Type": st.session_state.selected_pet["Type"],
-                    "Pet Breed": st.session_state.selected_pet["Breed"],
-                    "Pet Name": st.session_state.selected_pet["Name"],
-                    "Pet Age": st.session_state.selected_pet["Age"]
+                    "Pet Type": pet_type,
+                    "Pet Breed": selected_pet["breed"],
+                    "Pet Name": selected_pet["name"],
+                    "Pet Age": selected_pet["age"]
                 }
                 st.session_state.review_stage = True
                 st.rerun()

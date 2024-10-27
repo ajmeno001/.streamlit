@@ -86,9 +86,9 @@ def display_pet_options(pet_type):
     col1, col2, col3 = st.columns(3)
     
     pets = [
-        {"breed": f"{pet_type} Breed 1", "image": "IMAGE_URL_1"},
-        {"breed": f"{pet_type} Breed 2", "image": "IMAGE_URL_2"},
-        {"breed": f"{pet_type} Breed 3", "image": "IMAGE_URL_3"}
+        {"breed": f"{pet_type} Breed 1", "image": "https://wallpapers-all.com/uploads/posts/2016-11/19_dog.jpg"},
+        {"breed": f"{pet_type} Breed 2", "image": "https://wallpapers-all.com/uploads/posts/2016-11/19_dog.jpg"},
+        {"breed": f"{pet_type} Breed 3", "image": "https://wallpapers-all.com/uploads/posts/2016-11/19_dog.jpg"}
     ]
     
     for i, pet in enumerate(pets):
@@ -120,11 +120,11 @@ def submit_application():
             state = st.text_input("State")
             zip_code = st.text_input("Zip")
         
-        st.title("Pet Selection")
-        st.subheader("Click on a pet to select it for adoption.")
-        
-        pet_type = st.radio("Select Pet Type", ["Dog", "Cat", "Reptile"])
-        display_pet_options(pet_type)
+        st.title("Pet Information")
+        st.subheader("Select the type of pet and breed you wish to adopt.")
+        dog_breed = st.selectbox("Select Dog Breed 🐶", BREED_OPTIONS["Dog"], key="dog_breed")
+        cat_breed = st.selectbox("Select Cat Breed 🐱", BREED_OPTIONS["Cat"], key="cat_breed")
+        reptile_breed = st.selectbox("Select Reptile Breed 🦎", BREED_OPTIONS["Reptile"], key="reptile_breed")
 
         submitted = st.form_submit_button("Submit Application")
 
@@ -135,8 +135,8 @@ def submit_application():
                 st.error("Please enter a valid email address.")
             elif not validate_zip_code(zip_code):
                 st.error("Please enter a valid 5-digit zip code.")
-            elif 'selected_pet' not in st.session_state:
-                st.error("Please select a pet for adoption.")
+            elif dog_breed == "None" and cat_breed == "None" and reptile_breed == "None":
+                st.error("Please select at least one pet breed.")
             else:
                 st.session_state.application_data = {
                     "First Name": first_name,
@@ -146,11 +146,12 @@ def submit_application():
                     "City": city,
                     "State": state,
                     "Zip": zip_code,
-                    "Pet Type": st.session_state.selected_pet["Type"],
-                    "Pet Breed": st.session_state.selected_pet["Breed"],
-                    "Pet Name": st.session_state.selected_pet["Name"],
-                    "Pet DOB": st.session_state.selected_pet["DOB"],
-                    "Pet Weight": st.session_state.selected_pet["Weight"]
+                    "Dog Breed": dog_breed,
+                    "Cat Breed": cat_breed,
+                    "Reptile Breed": reptile_breed,
+                    "Dog Name": get_random_pet_name() if dog_breed != "None" else None,
+                    "Cat Name": get_random_pet_name() if cat_breed != "None" else None,
+                    "Reptile Name": get_random_pet_name() if reptile_breed != "None" else None
                 }
                 st.session_state.review_stage = True
                 st.rerun()

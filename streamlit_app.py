@@ -225,7 +225,7 @@ def main():
         if st.button("🆕 Enter New Application"):
             st.session_state.application_submitted = False
             st.session_state.review_stage = False
-            st.session_state.pop('selected_pet', None)
+            st.session_state.pop('application_data', None)
             st.rerun()
 
 if __name__ == "__main__":

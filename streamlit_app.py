@@ -109,6 +109,7 @@ def display_pet_options():
 
 def submit_application():
     with st.form("application_form"):
+        st.markdown("<h1 style='text-align: center;'>Pet Adoption Application Form</h1>", unsafe_allow_html=True)
         st.subheader("Contact Information")
         col1, col2 = st.columns(2)
         with col1:

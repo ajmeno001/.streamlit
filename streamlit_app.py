@@ -37,7 +37,7 @@ PETS = {
 
 # Initialize Streamlit
 st.set_page_config(page_title="Animal Adoption System", page_icon="🐾", layout="wide")
-st.title("🐶🐱🦎🐶🐱🦎🐶🐱🦎🐶🐱🦎🐶🐱🦎Animal Adoption System🐶🐱🦎🐶🐱🦎🐶🐱🦎🐶🐱🦎🐶🐱🦎 ")
+st.title("🐶🐱🦎Animal Adoption System🐍🐾")
 
 # Initialize Google Sheets connection
 conn = st.connection("gsheets", type=GSheetsConnection)

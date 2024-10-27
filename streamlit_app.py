@@ -24,7 +24,7 @@ PETS = {
         {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://example.com/golden_retriever.jpg", "size": (300, 200)},
     ],
     "Cat": [
-        {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://example.com/siamese.jpg", "size": (300, 200)},
+        {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://fishsubsidy.org/wp-content/uploads/2020/01/siamese-cat-health.jpg", "size": (300, 200)},
         {"breed": "Persian", "name": "Bella", "age": "2 years", "image": "https://example.com/persian.jpg", "size": (300, 200)},
         {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://example.com/maine_coon.jpg", "size": (300, 200)},
     ],

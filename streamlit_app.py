@@ -21,7 +21,7 @@ PETS = {
     "Dog": [
         {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "image": "https://3.bp.blogspot.com/-iX1ck5IPomE/Te8fiT-40GI/AAAAAAAAHVM/coJFdrPp2Vg/s1600/labrador-retriever-dog.jpg", "size": (25, 10)},
         {"breed": "German Shepherd", "name": "Max", "age": "3 years", "image": "https://pawinterest.com/wp-content/uploads/2020/11/16059481018p4cl.jpg", "size": (100, 75)},
-        {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://example.com/golden_retriever.jpg", "size": (300, 200)},
+        {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://goldenhearts.co/wp-content/uploads/2021/01/golden-retriever-2166211_1280-1024x678.jpg", "size": (300, 200)},
     ],
     "Cat": [
         {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://fishsubsidy.org/wp-content/uploads/2020/01/siamese-cat-health.jpg", "size": (300, 200)},

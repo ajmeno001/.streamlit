@@ -20,7 +20,7 @@ PET_EMOJIS = {
 PETS = {
     "Dog": [
         {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "image": "https://3.bp.blogspot.com/-iX1ck5IPomE/Te8fiT-40GI/AAAAAAAAHVM/coJFdrPp2Vg/s1600/labrador-retriever-dog.jpg", "size": (25, 10)},
-        {"breed": "German Shepherd", "name": "Max", "age": "3 years", "image": "https://example.com/german_shepherd.jpg", "size": (100, 75)},
+        {"breed": "German Shepherd", "name": "Max", "age": "3 years", "image": "https://pawinterest.com/wp-content/uploads/2020/11/16059481018p4cl.jpg", "size": (100, 75)},
         {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://example.com/golden_retriever.jpg", "size": (300, 200)},
     ],
     "Cat": [

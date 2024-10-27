@@ -181,6 +181,7 @@ def main():
         else:
             st.subheader("Application Summary")
             col1, col2 = st.columns(2)
+            
             with col1:
                 st.write("### Contact Information")
                 contact_info = ["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip"]
@@ -189,9 +190,16 @@ def main():
             
             with col2:
                 st.write("### Pet Information")
-                pet_info = ["Pet Type", "Pet Breed", "Pet Name", "Pet Age"]
-                for key in pet_info:
-                    st.write(f"{key}: {st.session_state.application_data[key]}")
+                pet_info = [("Dog", "Dog Breed", "Dog Name"), ("Cat", "Cat Breed", "Cat Name"), ("Reptile", "Reptile Breed", "Reptile Name")]
+                for pet_type, breed_key, name_key in pet_info:
+                    if st.session_state.application_data[breed_key] != "None":
+                        st.write(f"**{pet_type}**")
+                        st.write(f"Breed: {st.session_state.application_data[breed_key]}")
+                        st.write(f"Name: {st.session_state.application_data[name_key]}")
+                        
+                        # Display the pet's image
+                        pet_image = PETS[pet_type][st.session_state.application_data[breed_key]]["image"]
+                        st.image(pet_image, caption=f"{st.session_state.application_data[name_key]} - {st.session_state.application_data[breed_key]}", use_column_width=True)
             
             col1, col2 = st.columns(2)
             with col1:
@@ -206,9 +214,12 @@ def main():
                         
                         if send_confirmation_email(st.session_state.application_data["Email"], 
                                                    st.session_state.application_data["First Name"],
-                                                   st.session_state.application_data["Pet Type"],
-                                                   st.session_state.application_data["Pet Breed"],
-                                                   st.session_state.application_data["Pet Name"]):
+                                                   st.session_state.application_data["Dog Breed"],
+                                                   st.session_state.application_data["Cat Breed"],
+                                                   st.session_state.application_data["Reptile Breed"],
+                                                   st.session_state.application_data["Dog Name"],
+                                                   st.session_state.application_data["Cat Name"],
+                                                   st.session_state.application_data["Reptile Name"]):
                             st.success("Confirmation email sent!")
                         else:
                             st.warning("Confirmation email could not be sent. Please check your email address.")
@@ -225,8 +236,4 @@ def main():
         if st.button("🆕 Enter New Application"):
             st.session_state.application_submitted = False
             st.session_state.review_stage = False
-            st.session_state.pop('application_data', None)
             st.rerun()
-
-if __name__ == "__main__":
-    main()

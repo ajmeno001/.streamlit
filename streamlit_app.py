@@ -29,9 +29,9 @@ PETS = {
         {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://upload.wikimedia.org/wikipedia/commons/5/57/Cat-MaineCoon-Lucy.png", "size": (300, 200)},
     ],
     "Reptile": [
-        {"breed": "Bearded Dragon", "name": "Spike", "age": "1 year", "image": "https://example.com/bearded_dragon.jpg", "size": (300, 200)},
-        {"breed": "Leopard Gecko", "name": "Spots", "age": "2 years", "image": "https://example.com/leopard_gecko.jpg", "size": (300, 200)},
-        {"breed": "Ball Python", "name": "Slinky", "age": "3 years", "image": "https://example.com/ball_python.jpg", "size": (300, 200)},
+        {"breed": "Bearded Dragon", "name": "Spike", "age": "1 year", "image": "https://farm4.staticflickr.com/3361/3224850521_16237541eb_z.jpg", "size": (300, 200)},
+        {"breed": "Leopard Gecko", "name": "Spots", "age": "2 years", "image": "https://live.staticflickr.com/6102/6328338235_ea33556210.jpg", "size": (300, 200)},
+        {"breed": "Ball Python", "name": "Slinky", "age": "3 years", "image": "https://c1.staticflickr.com/9/8183/8383675583_9ceac5ca1b_b.jpg", "size": (300, 200)},
     ]
 }
 

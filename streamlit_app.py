@@ -19,19 +19,19 @@ PET_EMOJIS = {
 # Pet information
 PETS = {
     "Dog": [
-        {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "image": "https://3.bp.blogspot.com/-iX1ck5IPomE/Te8fiT-40GI/AAAAAAAAHVM/coJFdrPp2Vg/s1600/labrador-retriever-dog.jpg"},
-        {"breed": "German Shepherd", "name": "Max", "age": "3 years", "image": "https://pawinterest.com/wp-content/uploads/2020/11/16059481018p4cl.jpg"},
-        {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://goldenhearts.co/wp-content/uploads/2021/01/golden-retriever-2166211_1280-1024x678.jpg"},
+        {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "image": "https://3.bp.blogspot.com/-iX1ck5IPomE/Te8fiT-40GI/AAAAAAAAHVM/coJFdrPp2Vg/s1600/labrador-retriever-dog.jpg", "size": (25, 10)},
+        {"breed": "German Shepherd", "name": "Max", "age": "3 years", "image": "https://pawinterest.com/wp-content/uploads/2020/11/16059481018p4cl.jpg", "size": (100, 75)},
+        {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "image": "https://goldenhearts.co/wp-content/uploads/2021/01/golden-retriever-2166211_1280-1024x678.jpg", "size": (300, 200)},
     ],
     "Cat": [
-        {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://fishsubsidy.org/wp-content/uploads/2020/01/siamese-cat-health.jpg"},
-        {"breed": "Persian", "name": "Bella", "age": "2 years", "image": "https://media.cnn.com/api/v1/images/stellar/prod/181101165831-15-week-in-photos-1102-restricted.jpg?q=w_2000,h_1125,x_0,y_0,c_fill/h_778"},
-        {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://upload.wikimedia.org/wikipedia/commons/5/57/Cat-MaineCoon-Lucy.png"},
+        {"breed": "Siamese", "name": "Luna", "age": "4 years", "image": "https://fishsubsidy.org/wp-content/uploads/2020/01/siamese-cat-health.jpg", "size": (300, 200)},
+        {"breed": "Persian", "name": "Bella", "age": "2 years", "image": "https://media.cnn.com/api/v1/images/stellar/prod/181101165831-15-week-in-photos-1102-restricted.jpg?q=w_2000,h_1125,x_0,y_0,c_fill/h_778", "size": (300, 200)},
+        {"breed": "Maine Coon", "name": "Oliver", "age": "3 years", "image": "https://upload.wikimedia.org/wikipedia/commons/5/57/Cat-MaineCoon-Lucy.png", "size": (300, 200)},
     ],
     "Reptile": [
-        {"breed": "Bearded Dragon", "name": "Spike", "age": "1 year", "image": "https://farm4.staticflickr.com/3361/3224850521_16237541eb_z.jpg"},
-        {"breed": "Leopard Gecko", "name": "Spots", "age": "2 years", "image": "https://live.staticflickr.com/6102/6328338235_ea33556210.jpg"},
-        {"breed": "Ball Python", "name": "Slinky", "age": "3 years", "image": "https://c1.staticflickr.com/9/8183/8383675583_9ceac5ca1b_b.jpg"},
+        {"breed": "Bearded Dragon", "name": "Spike", "age": "1 year", "image": "https://farm4.staticflickr.com/3361/3224850521_16237541eb_z.jpg", "size": (300, 200)},
+        {"breed": "Leopard Gecko", "name": "Spots", "age": "2 years", "image": "https://live.staticflickr.com/6102/6328338235_ea33556210.jpg", "size": (300, 200)},
+        {"breed": "Ball Python", "name": "Slinky", "age": "3 years", "image": "https://c1.staticflickr.com/9/8183/8383675583_9ceac5ca1b_b.jpg", "size": (300, 200)},
     ]
 }
 
@@ -94,61 +94,64 @@ def display_pet_options():
     with tab1:
         st.header("Dogs 🐶")
         for pet in PETS["Dog"]:
-            col1, col2 = st.columns([1, 2])
-            with col1:
-                st.image(pet["image"], caption=pet["breed"], use_column_width=True)
-            with col2:
-                st.write(f"**Name:** {pet['name']}")
-                st.write(f"**Breed:** {pet['breed']}")
-                st.write(f"**Age:** {pet['age']}")
-                if st.button(f"Select {pet['name']}", key=f"Dog_{pet['name']}"):
-                    st.session_state.selected_pet = {
-                        "Type": "Dog",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"]
-                    }
-                    st.success(f"You've selected {pet['name']}!")
+            with st.form(key=f"dog_form_{pet['name']}"):
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.form_submit_button(f"Select {pet['name']}"):
+                        st.session_state.selected_pet = {
+                            "Type": "Dog",
+                            "Breed": pet["breed"],
+                            "Name": pet["name"],
+                            "Age": pet["age"]
+                        }
+                        st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
     with tab2:
         st.header("Cats 🐱")
         for pet in PETS["Cat"]:
-            col1, col2 = st.columns([1, 2])
-            with col1:
-                st.image(pet["image"], caption=pet["breed"], use_column_width=True)
-            with col2:
-                st.write(f"**Name:** {pet['name']}")
-                st.write(f"**Breed:** {pet['breed']}")
-                st.write(f"**Age:** {pet['age']}")
-                if st.button(f"Select {pet['name']}", key=f"Cat_{pet['name']}"):
-                    st.session_state.selected_pet = {
-                        "Type": "Cat",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"]
-                    }
-                    st.success(f"You've selected {pet['name']}!")
+            with st.form(key=f"cat_form_{pet['name']}"):
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.form_submit_button(f"Select {pet['name']}"):
+                        st.session_state.selected_pet = {
+                            "Type": "Cat",
+                            "Breed": pet["breed"],
+                            "Name": pet["name"],
+                            "Age": pet["age"]
+                        }
+                        st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
     with tab3:
         st.header("Reptiles 🦎")
         for pet in PETS["Reptile"]:
-            col1, col2 = st.columns([1, 2])
-            with col1:
-                st.image(pet["image"], caption=pet["breed"], use_column_width=True)
-            with col2:
-                st.write(f"**Name:** {pet['name']}")
-                st.write(f"**Breed:** {pet['breed']}")
-                st.write(f"**Age:** {pet['age']}")
-                if st.button(f"Select {pet['name']}", key=f"Reptile_{pet['name']}"):
-                    st.session_state.selected_pet = {
-                        "Type": "Reptile",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"]
-                    }
-                    st.success(f"You've selected {pet['name']}!")
+            with st.form(key=f"reptile_form_{pet['name']}"):
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.form_submit_button(f"Select {pet['name']}"):
+                        st.session_state.selected_pet = {
+                            "Type": "Reptile",
+                            "Breed": pet["breed"],
+                            "Name": pet["name"],
+                            "Age": pet["age"]
+                        }
+                        st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
 def submit_application():

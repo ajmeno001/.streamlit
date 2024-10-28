@@ -172,7 +172,51 @@ def submit_application():
         st.title("Pet Selection")
         st.subheader("Choose a pet to adopt")
         
-        display_pet_options()
+        tab1, tab2, tab3 = st.tabs(["Dogs 🐶", "Cats 🐱", "Reptiles 🦎"])
+        
+        selected_pet = None
+        
+        with tab1:
+            st.header("Dogs 🐶")
+            for pet in PETS["Dog"]:
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.checkbox(f"Select {pet['name']}", key=f"Dog_{pet['name']}"):
+                        selected_pet = {"Type": "Dog", **pet}
+                st.write("---")
+        
+        with tab2:
+            st.header("Cats 🐱")
+            for pet in PETS["Cat"]:
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.checkbox(f"Select {pet['name']}", key=f"Cat_{pet['name']}"):
+                        selected_pet = {"Type": "Cat", **pet}
+                st.write("---")
+        
+        with tab3:
+            st.header("Reptiles 🦎")
+            for pet in PETS["Reptile"]:
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.checkbox(f"Select {pet['name']}", key=f"Reptile_{pet['name']}"):
+                        selected_pet = {"Type": "Reptile", **pet}
+                st.write("---")
 
         submitted = st.form_submit_button("Submit Application")
 
@@ -183,7 +227,7 @@ def submit_application():
                 st.error("Please enter a valid email address.")
             elif not validate_zip_code(zip_code):
                 st.error("Please enter a valid 5-digit zip code.")
-            elif 'selected_pet' not in st.session_state:
+            elif selected_pet is None:
                 st.error("Please select a pet for adoption.")
             else:
                 st.session_state.application_data = {
@@ -194,10 +238,10 @@ def submit_application():
                     "City": city,
                     "State": state,
                     "Zip": zip_code,
-                    "Pet Type": st.session_state.selected_pet["Type"],
-                    "Pet Breed": st.session_state.selected_pet["Breed"],
-                    "Pet Name": st.session_state.selected_pet["Name"],
-                    "Pet Age": st.session_state.selected_pet["Age"]
+                    "Pet Type": selected_pet["Type"],
+                    "Pet Breed": selected_pet["breed"],
+                    "Pet Name": selected_pet["name"],
+                    "Pet Age": selected_pet["age"]
                 }
                 st.session_state.review_stage = True
                 st.rerun()

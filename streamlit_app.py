@@ -278,8 +278,8 @@ def main():
                     st.write(f"{key}: {st.session_state.application_data[key]}")
             with col2:
                 st.write("### Pet Information")
-                pet_info = ["Pet Type", "Pet Breed", "Pet Name", "Pet Age", "Pet Gender"]
-                                for key in pet_info:
+                pet_info = ["Pet Type", "Pet Breed", "Pet Name", "Pet Age"]
+                for key in pet_info:
                     st.write(f"{key}: {st.session_state.application_data[key]}")
 
             col1, col2 = st.columns(2)

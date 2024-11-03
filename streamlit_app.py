@@ -158,14 +158,14 @@ def submit_application():
         st.subheader("Contact Information")
         col1, col2 = st.columns(2)
         with col1:
-            first_name = st.text_input("First Name")
-            last_name = st.text_input("Last Name")
-            email = st.text_input("Email")
+            first_name = st.text_input("First Name", value=st.session_state.get('first_name', ''))
+            last_name = st.text_input("Last Name", value=st.session_state.get('last_name', ''))
+            email = st.text_input("Email", value=st.session_state.get('email', ''))
         with col2:
-            street_address = st.text_input("Street Address")
-            city = st.text_input("City")
-            state = st.text_input("State")
-            zip_code = st.text_input("Zip")
+            street_address = st.text_input("Street Address", value=st.session_state.get('street_address', ''))
+            city = st.text_input("City", value=st.session_state.get('city', ''))
+            state = st.text_input("State", value=st.session_state.get('state', ''))
+            zip_code = st.text_input("Zip", value=st.session_state.get('zip_code', ''))
 
         st.title("Pet Selection")
         st.subheader("Choose a pet to adopt")
@@ -182,7 +182,9 @@ def submit_application():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Dog_{pet['name']}"):
+                if st.checkbox(f"Select {pet['name']}", key=f"Dog_{pet['name']}", 
+                               value=st.session_state.get('selected_pet', {}).get('Name') == pet['name'] and 
+                                     st.session_state.get('selected_pet', {}).get('Type') == "Dog"):
                     selected_pet = {"Type": "Dog", **pet}
             st.write("---")
 
@@ -196,7 +198,9 @@ def submit_application():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Cat_{pet['name']}"):
+                if st.checkbox(f"Select {pet['name']}", key=f"Cat_{pet['name']}", 
+                               value=st.session_state.get('selected_pet', {}).get('Name') == pet['name'] and 
+                                     st.session_state.get('selected_pet', {}).get('Type') == "Cat"):
                     selected_pet = {"Type": "Cat", **pet}
             st.write("---")
 
@@ -210,7 +214,9 @@ def submit_application():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Reptile_{pet['name']}"):
+                if st.checkbox(f"Select {pet['name']}", key=f"Reptile_{pet['name']}", 
+                               value=st.session_state.get('selected_pet', {}).get('Name') == pet['name'] and 
+                                     st.session_state.get('selected_pet', {}).get('Type') == "Reptile"):
                     selected_pet = {"Type": "Reptile", **pet}
             st.write("---")
 
@@ -240,6 +246,14 @@ def submit_application():
                     "Pet Age": selected_pet["age"]
                 }
                 st.session_state.review_stage = True
+                st.session_state.selected_pet = selected_pet
+                st.session_state.first_name = first_name
+                st.session_state.last_name = last_name
+                st.session_state.email = email
+                st.session_state.street_address = street_address
+                st.session_state.city = city
+                st.session_state.state = state
+                st.session_state.zip_code = zip_code
                 st.rerun()
 
 def main():
@@ -284,7 +298,7 @@ def main():
                             st.session_state.application_data["Pet Breed"],
                             st.session_state.application_data["Pet Name"]
                         ):
-                                                        st.success("Confirmation email sent!")
+                            st.success("Confirmation email sent!")
                         else:
                             st.warning("Confirmation email could not be sent. Please check your email address.")
                         st.balloons()
@@ -301,6 +315,13 @@ def main():
             st.session_state.review_stage = False
             st.session_state.pop('application_data', None)
             st.session_state.pop('selected_pet', None)
+            st.session_state.pop('first_name', None)
+            st.session_state.pop('last_name', None)
+            st.session_state.pop('email', None)
+            st.session_state.pop('street_address', None)
+            st.session_state.pop('city', None)
+            st.session_state.pop('state', None)
+            st.session_state.pop('zip_code', None)
             st.rerun()
 
 if __name__ == "__main__":

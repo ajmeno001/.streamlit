@@ -269,28 +269,25 @@ def main():
                     st.write(f"{key}: {st.session_state.application_data[key]}")
 
             col1, col2 = st.columns(2)
-            with col1:
-                if st.button("🐾 Confirm and Submit Application"):
-                    new_data = pd.DataFrame([st.session_state.application_data])
-                    updated_data = pd.concat([existing_data, new_data], ignore_index=True)
-                    try:
-                        conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
-                        st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
-                        st.session_state.application_submitted = True
-                       if send_confirmation_email(st.session_state.application_data["Email"],
-                           st.session_state.application_data["First Name"],
-                           st.session_state.application_data["Pet Type"],
-                           st.session_state.application_data["Pet Breed"],
-                           st.session_state.application_data["Pet Name"]):
-    st.success("Confirmation email sent!")
-else:
-    st.warning("Confirmation email could not be sent. Please check your email address.")
-st.balloons()
-                        else:
-                            st.warning("Confirmation email could not be sent. Please check your email address.")
-                        st.balloons()
-                    except Exception as e:
-                        st.error(f"Error submitting application: {str(e)}")
+           with col1:
+    if st.button("🐾 Confirm and Submit Application"):
+        new_data = pd.DataFrame([st.session_state.application_data])
+        updated_data = pd.concat([existing_data, new_data], ignore_index=True)
+        try:
+            conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
+            st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
+            st.session_state.application_submitted = True
+            if send_confirmation_email(st.session_state.application_data["Email"],
+                                       st.session_state.application_data["First Name"],
+                                       st.session_state.application_data["Pet Type"],
+                                       st.session_state.application_data["Pet Breed"],
+                                       st.session_state.application_data["Pet Name"]):
+                st.success("Confirmation email sent!")
+            else:
+                st.warning("Confirmation email could not be sent. Please check your email address.")
+            st.balloons()
+        except Exception as e:
+            st.error(f"Error submitting application: {str(e)}")
             with col2:
                 if st.button("Edit Application"):
                     st.session_state.review_stage = False

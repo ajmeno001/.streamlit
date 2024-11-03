@@ -303,15 +303,12 @@ def main():
                     st.rerun()
     else:
         st.success("Your application has been submitted successfully!")
-  if st.button("🆕 Enter New Application"):
-        st.session_state.application_submitted = False
-        st.session_state.review_stage = False
-        st.session_state.application_data = {
-            "First Name": "", "Last Name": "", "Email": "",
-            "Street Address": "", "City": "", "State": "", "Zip": "",
-            "Pet Type": "", "Pet Breed": "", "Pet Name": "", "Pet Age": ""
-        }
-        st.rerun()
+        if st.button("🆕 Enter New Application"):
+            st.session_state.application_submitted = False
+            st.session_state.review_stage = False
+            st.session_state.pop('application_data', None)
+            st.session_state.pop('selected_pet', None)
+            st.rerun()
 
 if __name__ == "__main__":
     main()

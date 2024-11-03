@@ -56,7 +56,8 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed, pet_name):
     body = f"""
     Dear {first_name},
 
-    Thank you for submitting your pet adoption application. We have received your application for the following:
+    Thank you for submitting your pet adoption application.
+    We have received your application for the following:
 
     {PET_EMOJIS[pet_type]} {pet_type}: {pet_breed} (Name: {pet_name})
 
@@ -65,7 +66,7 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed, pet_name):
     Best regards,
     The Pet Adoption Team
     """
-
+    
     try:
         yag = yagmail.SMTP(SENDER_EMAIL, APP_PASSWORD)
         yag.send(
@@ -87,8 +88,9 @@ def validate_zip_code(zip_code):
 
 def display_pet_options():
     st.subheader("Available Pets")
+    
     tab1, tab2, tab3 = st.tabs(["Dogs 🐶", "Cats 🐱", "Reptiles 🦎"])
-
+    
     with tab1:
         st.header("Dogs 🐶")
         for pet in PETS["Dog"]:
@@ -155,17 +157,9 @@ def display_pet_options():
 def submit_application():
     if 'application_data' not in st.session_state:
         st.session_state.application_data = {
-            "First Name": "",
-            "Last Name": "",
-            "Email": "",
-            "Street Address": "",
-            "City": "",
-            "State": "",
-            "Zip": "",
-            "Pet Type": "",
-            "Pet Breed": "",
-            "Pet Name": "",
-            "Pet Age": ""
+            "First Name": "", "Last Name": "", "Email": "",
+            "Street Address": "", "City": "", "State": "", "Zip": "",
+            "Pet Type": "", "Pet Breed": "", "Pet Name": "", "Pet Age": ""
         }
 
     with st.form("application_form"):
@@ -181,7 +175,7 @@ def submit_application():
             city = st.text_input("City", value=st.session_state.application_data["City"])
             state = st.text_input("State", value=st.session_state.application_data["State"])
             zip_code = st.text_input("Zip", value=st.session_state.application_data["Zip"])
-
+        
         st.title("Pet Selection")
         st.subheader("Choose a pet to adopt")
         display_pet_options()
@@ -234,22 +228,25 @@ def main():
                 contact_info = ["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip"]
                 for key in contact_info:
                     st.write(f"{key}: {st.session_state.application_data[key]}")
+            
             with col2:
                 st.write("### Pet Information")
                 pet_info = ["Pet Type", "Pet Breed", "Pet Name", "Pet Age"]
                 for key in pet_info:
                     st.write(f"{key}: {st.session_state.application_data[key]}")
-
+            
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("🐾 Confirm and Submit Application"):
                     new_data = pd.DataFrame([st.session_state.application_data])
                     updated_data = pd.concat([existing_data, new_data], ignore_index=True)
+                    
                     try:
                         conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
                         st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                         st.session_state.application_submitted = True
-                        if send_confirmation_email(st.session_state.application_data["Email"],
+                        
+                        if send_confirmation_email(st.session_state.application_data["Email"], 
                                                    st.session_state.application_data["First Name"],
                                                    st.session_state.application_data["Pet Type"],
                                                    st.session_state.application_data["Pet Breed"],
@@ -257,6 +254,7 @@ def main():
                             st.success("Confirmation email sent!")
                         else:
                             st.warning("Confirmation email could not be sent. Please check your email address.")
+                        
                         st.balloons()
                     except Exception as e:
                         st.error(f"Error submitting application: {str(e)}")

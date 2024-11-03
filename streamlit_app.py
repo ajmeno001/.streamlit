@@ -278,11 +278,14 @@ def main():
                         st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                         st.session_state.application_submitted = True
                         if send_confirmation_email(st.session_state.application_data["Email"],
-                                                   st.session_state.application_data["First Name"],
-                                                   st.session_state.application_data["Pet Type"],
-                                                   st.session_state.application_data["Pet Breed"],
-                                                   st.session_state.application_data["Pet Name"]):
-                            st.success("                            st.success("Confirmation email sent!")
+                           st.session_state.application_data["First Name"],
+                           st.session_state.application_data["Pet Type"],
+                           st.session_state.application_data["Pet Breed"],
+                           st.session_state.application_data["Pet Name"]):
+    st.success("Confirmation email sent!")
+else:
+    st.warning("Confirmation email could not be sent. Please check your email address.")
+st.balloons()
                         else:
                             st.warning("Confirmation email could not be sent. Please check your email address.")
                         st.balloons()

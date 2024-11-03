@@ -56,8 +56,7 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed, pet_name):
     body = f"""
     Dear {first_name},
 
-    Thank you for submitting your pet adoption application.
-    We have received your application for the following:
+    Thank you for submitting your pet adoption application. We have received your application for the following:
 
     {PET_EMOJIS[pet_type]} {pet_type}: {pet_breed} (Name: {pet_name})
 
@@ -66,7 +65,7 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed, pet_name):
     Best regards,
     The Pet Adoption Team
     """
-    
+
     try:
         yag = yagmail.SMTP(SENDER_EMAIL, APP_PASSWORD)
         yag.send(
@@ -88,9 +87,8 @@ def validate_zip_code(zip_code):
 
 def display_pet_options():
     st.subheader("Available Pets")
-    
     tab1, tab2, tab3 = st.tabs(["Dogs 🐶", "Cats 🐱", "Reptiles 🦎"])
-    
+
     with tab1:
         st.header("Dogs 🐶")
         for pet in PETS["Dog"]:
@@ -102,14 +100,14 @@ def display_pet_options():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                    if st.form_submit_button(f"Select {pet['name']}"):
-                        st.session_state.selected_pet = {
-                            "Type": "Dog",
-                            "Breed": pet["breed"],
-                            "Name": pet["name"],
-                            "Age": pet["age"]
-                        }
-                        st.success(f"You've selected {pet['name']}!")
+                if st.form_submit_button(f"Select {pet['name']}"):
+                    st.session_state.selected_pet = {
+                        "Type": "Dog",
+                        "Breed": pet["breed"],
+                        "Name": pet["name"],
+                        "Age": pet["age"]
+                    }
+                    st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
     with tab2:
@@ -123,14 +121,14 @@ def display_pet_options():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                    if st.form_submit_button(f"Select {pet['name']}"):
-                        st.session_state.selected_pet = {
-                            "Type": "Cat",
-                            "Breed": pet["breed"],
-                            "Name": pet["name"],
-                            "Age": pet["age"]
-                        }
-                        st.success(f"You've selected {pet['name']}!")
+                if st.form_submit_button(f"Select {pet['name']}"):
+                    st.session_state.selected_pet = {
+                        "Type": "Cat",
+                        "Breed": pet["breed"],
+                        "Name": pet["name"],
+                        "Age": pet["age"]
+                    }
+                    st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
     with tab3:
@@ -144,22 +142,30 @@ def display_pet_options():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                    if st.form_submit_button(f"Select {pet['name']}"):
-                        st.session_state.selected_pet = {
-                            "Type": "Reptile",
-                            "Breed": pet["breed"],
-                            "Name": pet["name"],
-                            "Age": pet["age"]
-                        }
-                        st.success(f"You've selected {pet['name']}!")
+                if st.form_submit_button(f"Select {pet['name']}"):
+                    st.session_state.selected_pet = {
+                        "Type": "Reptile",
+                        "Breed": pet["breed"],
+                        "Name": pet["name"],
+                        "Age": pet["age"]
+                    }
+                    st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
 def submit_application():
     if 'application_data' not in st.session_state:
         st.session_state.application_data = {
-            "First Name": "", "Last Name": "", "Email": "",
-            "Street Address": "", "City": "", "State": "", "Zip": "",
-            "Pet Type": "", "Pet Breed": "", "Pet Name": "", "Pet Age": ""
+            "First Name": "",
+            "Last Name": "",
+            "Email": "",
+            "Street Address": "",
+            "City": "",
+            "State": "",
+            "Zip": "",
+            "Pet Type": "",
+            "Pet Breed": "",
+            "Pet Name": "",
+            "Pet Age": ""
         }
 
     with st.form("application_form"):
@@ -175,49 +181,10 @@ def submit_application():
             city = st.text_input("City", value=st.session_state.application_data["City"])
             state = st.text_input("State", value=st.session_state.application_data["State"])
             zip_code = st.text_input("Zip", value=st.session_state.application_data["Zip"])
-        
+
         st.title("Pet Selection")
         st.subheader("Choose a pet to adopt")
-        
-        col_dog, col_cat, col_reptile = st.columns(3)
-        
-        selected_pet = None
-        
-        with col_dog:
-            st.header("Dogs 🐶")
-            for pet in PETS["Dog"]:
-                st.image(pet["image"], caption=pet["breed"], use_column_width=True)
-                st.write(f"**Name:** {pet['name']}")
-                st.write(f"**Breed:** {pet['breed']}")
-                st.write(f"**Age:** {pet['age']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Dog_{pet['name']}", 
-                               value=st.session_state.application_data["Pet Name"] == pet['name']):
-                    selected_pet = {"Type": "Dog", **pet}
-                st.write("---")
-        
-        with col_cat:
-            st.header("Cats 🐱")
-            for pet in PETS["Cat"]:
-                st.image(pet["image"], caption=pet["breed"], use_column_width=True)
-                st.write(f"**Name:** {pet['name']}")
-                st.write(f"**Breed:** {pet['breed']}")
-                st.write(f"**Age:** {pet['age']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Cat_{pet['name']}",
-                               value=st.session_state.application_data["Pet Name"] == pet['name']):
-                    selected_pet = {"Type": "Cat", **pet}
-                st.write("---")
-        
-        with col_reptile:
-            st.header("Reptiles 🦎")
-            for pet in PETS["Reptile"]:
-                st.image(pet["image"], caption=pet["breed"], use_column_width=True)
-                st.write(f"**Name:** {pet['name']}")
-                st.write(f"**Breed:** {pet['breed']}")
-                st.write(f"**Age:** {pet['age']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Reptile_{pet['name']}",
-                               value=st.session_state.application_data["Pet Name"] == pet['name']):
-                    selected_pet = {"Type": "Reptile", **pet}
-                st.write("---")
+        display_pet_options()
 
         submitted = st.form_submit_button("Submit Application")
 
@@ -228,7 +195,7 @@ def submit_application():
                 st.error("Please enter a valid email address.")
             elif not validate_zip_code(zip_code):
                 st.error("Please enter a valid 5-digit zip code.")
-            elif selected_pet is None:
+            elif 'selected_pet' not in st.session_state:
                 st.error("Please select a pet for adoption.")
             else:
                 st.session_state.application_data = {
@@ -239,10 +206,10 @@ def submit_application():
                     "City": city,
                     "State": state,
                     "Zip": zip_code,
-                    "Pet Type": selected_pet["Type"],
-                    "Pet Breed": selected_pet["breed"],
-                    "Pet Name": selected_pet["name"],
-                    "Pet Age": selected_pet["age"]
+                    "Pet Type": st.session_state.selected_pet["Type"],
+                    "Pet Breed": st.session_state.selected_pet["Breed"],
+                    "Pet Name": st.session_state.selected_pet["Name"],
+                    "Pet Age": st.session_state.selected_pet["Age"]
                 }
                 st.session_state.review_stage = True
                 st.rerun()
@@ -267,25 +234,22 @@ def main():
                 contact_info = ["First Name", "Last Name", "Email", "Street Address", "City", "State", "Zip"]
                 for key in contact_info:
                     st.write(f"{key}: {st.session_state.application_data[key]}")
-            
             with col2:
                 st.write("### Pet Information")
                 pet_info = ["Pet Type", "Pet Breed", "Pet Name", "Pet Age"]
                 for key in pet_info:
                     st.write(f"{key}: {st.session_state.application_data[key]}")
-            
+
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("🐾 Confirm and Submit Application"):
                     new_data = pd.DataFrame([st.session_state.application_data])
                     updated_data = pd.concat([existing_data, new_data], ignore_index=True)
-                    
                     try:
                         conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
                         st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                         st.session_state.application_submitted = True
-                        
-                        if send_confirmation_email(st.session_state.application_data["Email"], 
+                        if send_confirmation_email(st.session_state.application_data["Email"],
                                                    st.session_state.application_data["First Name"],
                                                    st.session_state.application_data["Pet Type"],
                                                    st.session_state.application_data["Pet Breed"],
@@ -293,7 +257,6 @@ def main():
                             st.success("Confirmation email sent!")
                         else:
                             st.warning("Confirmation email could not be sent. Please check your email address.")
-                        
                         st.balloons()
                     except Exception as e:
                         st.error(f"Error submitting application: {str(e)}")

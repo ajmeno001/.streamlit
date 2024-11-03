@@ -69,7 +69,6 @@ def send_confirmation_email(email, first_name, pet_type, pet_breed, pet_name):
     Best regards,
     The Pet Adoption Team
     """
-
     try:
         yag = yagmail.SMTP(SENDER_EMAIL, APP_PASSWORD)
         yag.send(
@@ -92,7 +91,7 @@ def validate_zip_code(zip_code):
 def display_pet_options():
     st.subheader("Available Pets")
     tab1, tab2, tab3 = st.tabs(["Dogs 🐶", "Cats 🐱", "Reptiles 🦎"])
-
+    
     with tab1:
         st.header("Dogs 🐶")
         for pet in PETS["Dog"]:
@@ -108,14 +107,14 @@ def display_pet_options():
                 if st.form_submit_button(f"Select {pet['name']}"):
                     st.session_state.selected_pet = {
                         "Type": "Dog",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"],
-                        "Gender": pet["gender"]
+                        "breed": pet["breed"],
+                        "name": pet["name"],
+                        "age": pet["age"],
+                        "gender": pet["gender"]
                     }
                     st.success(f"You've selected {pet['name']}!")
-        st.write("---")
-
+            st.write("---")
+    
     with tab2:
         st.header("Cats 🐱")
         for pet in PETS["Cat"]:
@@ -131,14 +130,14 @@ def display_pet_options():
                 if st.form_submit_button(f"Select {pet['name']}"):
                     st.session_state.selected_pet = {
                         "Type": "Cat",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"],
-                        "Gender": pet["gender"]
+                        "breed": pet["breed"],
+                        "name": pet["name"],
+                        "age": pet["age"],
+                        "gender": pet["gender"]
                     }
                     st.success(f"You've selected {pet['name']}!")
-        st.write("---")
-
+            st.write("---")
+    
     with tab3:
         st.header("Reptiles 🦎")
         for pet in PETS["Reptile"]:
@@ -154,13 +153,13 @@ def display_pet_options():
                 if st.form_submit_button(f"Select {pet['name']}"):
                     st.session_state.selected_pet = {
                         "Type": "Reptile",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"],
-                        "Gender": pet["gender"]
+                        "breed": pet["breed"],
+                        "name": pet["name"],
+                        "age": pet["age"],
+                        "gender": pet["gender"]
                     }
                     st.success(f"You've selected {pet['name']}!")
-        st.write("---")
+            st.write("---")
 
 def submit_application():
     with st.form("application_form"):
@@ -168,14 +167,14 @@ def submit_application():
         st.subheader("Contact Information")
         col1, col2 = st.columns(2)
         with col1:
-            first_name = st.text_input("First Name")
-            last_name = st.text_input("Last Name")
-            email = st.text_input("Email")
+            first_name = st.text_input("First Name", value=st.session_state.application_data.get('First Name', ''))
+            last_name = st.text_input("Last Name", value=st.session_state.application_data.get('Last Name', ''))
+            email = st.text_input("Email", value=st.session_state.application_data.get('Email', ''))
         with col2:
-            street_address = st.text_input("Street Address")
-            city = st.text_input("City")
-            state = st.text_input("State")
-            zip_code = st.text_input("Zip")
+            street_address = st.text_input("Street Address", value=st.session_state.application_data.get('Street Address', ''))
+            city = st.text_input("City", value=st.session_state.application_data.get('City', ''))
+            state = st.text_input("State", value=st.session_state.application_data.get('State', ''))
+            zip_code = st.text_input("Zip", value=st.session_state.application_data.get('Zip', ''))
 
         st.title("Pet Selection")
         st.subheader("Choose a pet to adopt")
@@ -193,9 +192,9 @@ def submit_application():
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
                     st.write(f"**Gender:** {pet['gender']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Dog_{pet['name']}"):
+                if st.checkbox(f"Select {pet['name']}", key=f"Dog_{pet['name']}", value=st.session_state.application_data.get('Pet Name') == pet['name']):
                     selected_pet = {"Type": "Dog", **pet}
-            st.write("---")
+                st.write("---")
 
         with tab2:
             st.header("Cats 🐱")
@@ -208,9 +207,9 @@ def submit_application():
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
                     st.write(f"**Gender:** {pet['gender']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Cat_{pet['name']}"):
+                if st.checkbox(f"Select {pet['name']}", key=f"Cat_{pet['name']}", value=st.session_state.application_data.get('Pet Name') == pet['name']):
                     selected_pet = {"Type": "Cat", **pet}
-            st.write("---")
+                st.write("---")
 
         with tab3:
             st.header("Reptiles 🦎")
@@ -223,12 +222,11 @@ def submit_application():
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
                     st.write(f"**Gender:** {pet['gender']}")
-                if st.checkbox(f"Select {pet['name']}", key=f"Reptile_{pet['name']}"):
+                if st.checkbox(f"Select {pet['name']}", key=f"Reptile_{pet['name']}", value=st.session_state.application_data.get('Pet Name') == pet['name']):
                     selected_pet = {"Type": "Reptile", **pet}
-            st.write("---")
+                st.write("---")
 
         submitted = st.form_submit_button("Submit Application")
-
         if submitted:
             if not all([first_name, last_name, email, street_address, city, state, zip_code]):
                 st.error("Please fill in all fields.")
@@ -261,9 +259,10 @@ def main():
 
     if 'review_stage' not in st.session_state:
         st.session_state.review_stage = False
-
     if 'application_submitted' not in st.session_state:
         st.session_state.application_submitted = False
+    if 'application_data' not in st.session_state:
+        st.session_state.application_data = {}
 
     if not st.session_state.application_submitted:
         if not st.session_state.review_stage:
@@ -278,7 +277,7 @@ def main():
                     st.write(f"{key}: {st.session_state.application_data[key]}")
             with col2:
                 st.write("### Pet Information")
-                pet_info = ["Pet Type", "Pet Breed", "Pet Name", "Pet Age"]
+                pet_info = ["Pet Type", "Pet Breed", "Pet Name", "Pet Age", "Pet Gender"]
                 for key in pet_info:
                     st.write(f"{key}: {st.session_state.application_data[key]}")
 
@@ -313,7 +312,7 @@ def main():
         if st.button("🆕 Enter New Application"):
             st.session_state.application_submitted = False
             st.session_state.review_stage = False
-            st.session_state.pop('application_data', None)
+            st.session_state.application_data = {}
             st.session_state.pop('selected_pet', None)
             st.rerun()
 

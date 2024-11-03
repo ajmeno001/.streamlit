@@ -277,7 +277,7 @@ def main():
                         conn.update(worksheet=WORKSHEET_NAME, data=updated_data)
                         st.success("🎉 Application sent to Admin! We'll be in touch soon. 🐾")
                         st.session_state.application_submitted = True
-                        if send_confirmation_email(st.session_state.application_data["Email"],
+                       if send_confirmation_email(st.session_state.application_data["Email"],
                            st.session_state.application_data["First Name"],
                            st.session_state.application_data["Pet Type"],
                            st.session_state.application_data["Pet Breed"],

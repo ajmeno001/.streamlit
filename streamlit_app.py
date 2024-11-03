@@ -102,14 +102,14 @@ def display_pet_options():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                if st.form_submit_button(f"Select {pet['name']}"):
-                    st.session_state.selected_pet = {
-                        "Type": "Dog",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"]
-                    }
-                    st.success(f"You've selected {pet['name']}!")
+                    if st.form_submit_button(f"Select {pet['name']}"):
+                        st.session_state.selected_pet = {
+                            "Type": "Dog",
+                            "Breed": pet["breed"],
+                            "Name": pet["name"],
+                            "Age": pet["age"]
+                        }
+                        st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
     with tab2:
@@ -123,14 +123,14 @@ def display_pet_options():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                if st.form_submit_button(f"Select {pet['name']}"):
-                    st.session_state.selected_pet = {
-                        "Type": "Cat",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"]
-                    }
-                    st.success(f"You've selected {pet['name']}!")
+                    if st.form_submit_button(f"Select {pet['name']}"):
+                        st.session_state.selected_pet = {
+                            "Type": "Cat",
+                            "Breed": pet["breed"],
+                            "Name": pet["name"],
+                            "Age": pet["age"]
+                        }
+                        st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
     with tab3:
@@ -144,41 +144,79 @@ def display_pet_options():
                     st.write(f"**Name:** {pet['name']}")
                     st.write(f"**Breed:** {pet['breed']}")
                     st.write(f"**Age:** {pet['age']}")
-                if st.form_submit_button(f"Select {pet['name']}"):
-                    st.session_state.selected_pet = {
-                        "Type": "Reptile",
-                        "Breed": pet["breed"],
-                        "Name": pet["name"],
-                        "Age": pet["age"]
-                    }
-                    st.success(f"You've selected {pet['name']}!")
+                    if st.form_submit_button(f"Select {pet['name']}"):
+                        st.session_state.selected_pet = {
+                            "Type": "Reptile",
+                            "Breed": pet["breed"],
+                            "Name": pet["name"],
+                            "Age": pet["age"]
+                        }
+                        st.success(f"You've selected {pet['name']}!")
             st.write("---")
 
 def submit_application():
-    if 'application_data' not in st.session_state:
-        st.session_state.application_data = {
-            "First Name": "", "Last Name": "", "Email": "",
-            "Street Address": "", "City": "", "State": "", "Zip": "",
-            "Pet Type": "", "Pet Breed": "", "Pet Name": "", "Pet Age": ""
-        }
-
     with st.form("application_form"):
         st.markdown("<h1 style='text-align: center;'>Pet Adoption Application Form</h1>", unsafe_allow_html=True)
         st.subheader("Contact Information")
         col1, col2 = st.columns(2)
         with col1:
-            first_name = st.text_input("First Name", value=st.session_state.application_data["First Name"])
-            last_name = st.text_input("Last Name", value=st.session_state.application_data["Last Name"])
-            email = st.text_input("Email", value=st.session_state.application_data["Email"])
+            first_name = st.text_input("First Name")
+            last_name = st.text_input("Last Name")
+            email = st.text_input("Email")
         with col2:
-            street_address = st.text_input("Street Address", value=st.session_state.application_data["Street Address"])
-            city = st.text_input("City", value=st.session_state.application_data["City"])
-            state = st.text_input("State", value=st.session_state.application_data["State"])
-            zip_code = st.text_input("Zip", value=st.session_state.application_data["Zip"])
+            street_address = st.text_input("Street Address")
+            city = st.text_input("City")
+            state = st.text_input("State")
+            zip_code = st.text_input("Zip")
         
         st.title("Pet Selection")
         st.subheader("Choose a pet to adopt")
-        display_pet_options()
+        
+        tab1, tab2, tab3 = st.tabs(["Dogs 🐶", "Cats 🐱", "Reptiles 🦎"])
+        
+        selected_pet = None
+        
+        with tab1:
+            st.header("Dogs 🐶")
+            for pet in PETS["Dog"]:
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.checkbox(f"Select {pet['name']}", key=f"Dog_{pet['name']}"):
+                        selected_pet = {"Type": "Dog", **pet}
+                st.write("---")
+        
+        with tab2:
+            st.header("Cats 🐱")
+            for pet in PETS["Cat"]:
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.checkbox(f"Select {pet['name']}", key=f"Cat_{pet['name']}"):
+                        selected_pet = {"Type": "Cat", **pet}
+                st.write("---")
+        
+        with tab3:
+            st.header("Reptiles 🦎")
+            for pet in PETS["Reptile"]:
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(pet["image"], caption=pet["breed"], use_column_width=True)
+                with col2:
+                    st.write(f"**Name:** {pet['name']}")
+                    st.write(f"**Breed:** {pet['breed']}")
+                    st.write(f"**Age:** {pet['age']}")
+                    if st.checkbox(f"Select {pet['name']}", key=f"Reptile_{pet['name']}"):
+                        selected_pet = {"Type": "Reptile", **pet}
+                st.write("---")
 
         submitted = st.form_submit_button("Submit Application")
 
@@ -189,7 +227,7 @@ def submit_application():
                 st.error("Please enter a valid email address.")
             elif not validate_zip_code(zip_code):
                 st.error("Please enter a valid 5-digit zip code.")
-            elif 'selected_pet' not in st.session_state:
+            elif selected_pet is None:
                 st.error("Please select a pet for adoption.")
             else:
                 st.session_state.application_data = {
@@ -200,10 +238,10 @@ def submit_application():
                     "City": city,
                     "State": state,
                     "Zip": zip_code,
-                    "Pet Type": st.session_state.selected_pet["Type"],
-                    "Pet Breed": st.session_state.selected_pet["Breed"],
-                    "Pet Name": st.session_state.selected_pet["Name"],
-                    "Pet Age": st.session_state.selected_pet["Age"]
+                    "Pet Type": selected_pet["Type"],
+                    "Pet Breed": selected_pet["breed"],
+                    "Pet Name": selected_pet["name"],
+                    "Pet Age": selected_pet["age"]
                 }
                 st.session_state.review_stage = True
                 st.rerun()

@@ -26,7 +26,7 @@ genders = ["Male", "Female"]
 # Modify the PETS dictionary to include random genders
 PETS = {
     "Dog": [
-        {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "gender": random.choice(genders), "image": "https://3.bp.blogspot.com/-iX1ck5IPomE/Te8fiT-40GI/AAAAAAAAHVM/coJFdrPp2Vg/s1600/labrador-retriever-dog.jpg", "size": (25, 10)},
+        {"breed": "Labrador Retriever", "name": "Buddy", "age": "2 years", "gender": "Male", "image": "https://3.bp.blogspot.com/-iX1ck5IPomE/Te8fiT-40GI/AAAAAAAAHVM/coJFdrPp2Vg/s1600/labrador-retriever-dog.jpg", "size": (25, 10)},
         {"breed": "German Shepherd", "name": "Max", "age": "3 years", "gender": random.choice(genders), "image": "https://pawinterest.com/wp-content/uploads/2020/11/16059481018p4cl.jpg", "size": (100, 75)},
         {"breed": "Golden Retriever", "name": "Charlie", "age": "1 year", "gender": random.choice(genders), "image": "https://goldenhearts.co/wp-content/uploads/2021/01/golden-retriever-2166211_1280-1024x678.jpg", "size": (300, 200)},
     ],
